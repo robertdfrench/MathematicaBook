@@ -1,0 +1,26 @@
+\chapter[Kernel, State, Scope]{The Kernel, Variable State, and Scope}
+\label{chap:Kernel}
+
+Before beginning this chapter, it is assumed that you know a few things about \emph{Mathematica} programming already. Specifically, you will need to know how to
+\begin{enumerate}
+	   \item assign values to variables
+	   \item evaluate \emph{Mathematica} cells
+\end{enumerate}
+and if you don't, that's quite alright. Just see the section ``\emph{\nameref{chap:Prelim}}'' on page \pageref{chap:Prelim}, and even if you have done a bit of programming before, we will walk you through some basic \emph{Mathematica}.
+
+\section{What is the Kernel?}
+
+In \emph{Mathematica}, all of your coding is done in a \emph{notebook}, and all of the output of your code is displayed there as well. However, the calculations themselves are done in \emph{an entirely separate program}\footnote{This is an example of a Service Oriented Architecture, and if you are interested in software engineering, it would behoove you to investigate that topic further.}, and this program is called a \emph{kernel}. There are many reasons for doing these calculations in a separate program from your notebooks:
+
+\begin{enumerate}
+	   \item You can still edit your notebooks while long computations are running
+	   \item You can share variables and data between notebooks
+	   \item You can manage multiple kernels, (and thus multiple long-running computations) from a single notebook
+	   \item You can run computations on multiple kernels \emph{on other computers}
+\end{enumerate}
+
+
+
+So we see that this separation of kernel and notebook is very powerful. But what does it mean in terms of your research? Specifically, while you are working on your code, the values you calculate and the variables you assign them to will be stored in your ``Local Kernel''. This assignment of values to variables is called ``State'', and it's just a fancy computer science term for ``The values of your variables at a given time''.
+
+\subsection{Quitting the Kernel}. This is kindof like an emergency reset for your program. Quitting the Kernel will basically erase the values for all the variables in your notebook (because they are stored in this separate program which you are about to quit).
