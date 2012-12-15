@@ -1,4 +1,4 @@
-MathematicaForUndergraduateResearch.pdf: book.tex preface.tex chapter1.tex preliminary.tex appendix1.tex
+MathematicaForUndergraduateResearch.pdf: *.tex
 	texi2pdf -q -c book.tex --output=MathematicaForUndergraduateResearch.pdf
 	open MathematicaForUndergraduateResearch.pdf
 

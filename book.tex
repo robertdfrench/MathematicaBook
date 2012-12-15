@@ -1,6 +1,7 @@
-\documentclass[psamsfonts]{amsbook}
+\documentclass[psamsfonts,oneside]{amsbook}
 \usepackage{nameref}
 \usepackage{hyperref}
+\usepackage{graphicx}
 \makeindex
 
 \begin{document}
@@ -8,12 +9,19 @@
 \title[\emph{Mathematica} for Undergraduate Research]{A Simple Introduction to \emph{Mathematica} for Undergraduate Research Projects}
 \author[Jator]{Samuel N. Jator}
 \author[French]{Robert D. French}
-\maketitle
+%\maketitle
+\input{CustomCover}
 \tableofcontents
 \input{preface}
-\input{preliminary}
+\input{Preliminaries}
 \mainmatter
-\input{chapter1}
-\input{appendix1}
+\input{StuffYouveSeenBefore}
+\input{KernelStateScope}
+\input{Functions}
+\input{ListsMap}
+\input{SymbolsExpressionsReplacement}
+\appendix
+\input{Help}
+\input{GitHub}
 \backmatter
 \end{document}
