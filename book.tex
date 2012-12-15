@@ -1,8 +1,13 @@
 \documentclass[psamsfonts,oneside]{amsbook}
 \usepackage{nameref}
-\usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{alltt}
+\usepackage[colorlinks]{hyperref}
+
+\newenvironment{code}{\begin{quote}\begin{alltt}}{\end{alltt}\end{quote}}
+
 \makeindex
+
 
 \begin{document}
 \frontmatter
@@ -24,5 +29,6 @@
 \appendix
 \input{Help}
 \input{GitHub}
+\input{EulerDerivation}
 \backmatter
 \end{document}

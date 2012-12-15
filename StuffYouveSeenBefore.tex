@@ -11,11 +11,35 @@ and if you don't, that's quite alright. Just see the section ``\emph{\nameref{ch
 \section{Variable Assignment}
 The first thing we need to know in any language is how to assign variables. Probably you are thinking ``\emph{I learned this in CSCI 1010!}'', but \emph{Mathematica} is a subtle language, and does not always work as you might expect if you are coming from C++ or FORTRAN.
 
-\begin{verbatim}
+\begin{code}
 i = 1;
-j := 2;
-k = 3
+j = 2
+k := 3;
 l := 4
-\end{verbatim}
+\end{code}
 
-Looking at this example, we can see that there are four slightly different ways to ``assign'' values to a variable, so let's discuss this a bit. If you put this code into a \emph{Mathematica} cell, you will see that, upon evaluating the cell, 
+Looking at this example, we can see that there are four slightly different ways to ``assign'' values to a variable, so let's discuss this a bit. If you put this code into a \emph{Mathematica} cell, you will see that, upon evaluating the cell, it will output:
+
+\begin{code}
+2
+4
+\end{code}
+
+So, if we assigned four numbers to four variables, why do we only see two outputs? The key here is the semicolon (;) at the end of the first and third lines. This tells \emph{Mathematica} to suppress the output of that calculation. Generally, it is appropriate to put a semicolon at the end of every line of code in a cell except for the last one. This is because you \emph{usually} want to group your code into cells in such a way that each cell achieves one result, computes one item (or related set of items), or builds one data structure. When debugging, it can sometimes be handy to remove individual semicolons in order to investigate whether each line behaves as you expect.
+
+Now, what is the deal with the \texttt{:=} operator? This is called the \emph{delayed evaluation} operator. This is different from the standard \texttt{=} sign in one important way: it does not assign the value to that variable immediately. Rather, it tells \emph{Mathematica} to wait until your program is running\footnote{This is called \emph{runtime}. Computer Scientists are a clever lot, aren't they?} and then evaluate the right hand side of that expression. 
+
+What that means, in terms of the above example, is that, at the moment of evaluation, \texttt{i} and \texttt{j} are numeric variables that contain the values 1 and 2, but \texttt{k} and \texttt{l} are just symbols that do not yet contain any value. Let's investigate this:
+
+\begin{code}
+	   Head[i]
+	   Head[k]
+\end{code}
+
+You can see that the \texttt{Head} function returns different results for \texttt{i} and \texttt{j}. This should give you some indication that they are fundamentally different structures, even though the code used to create them looks very similar. 
+
+Delayed Evaluation is most frequently used when defining functions (See \nameref{chap:Functions}). For now, this is as far as we need to go with this topic. You might be thinking: ``\emph{Then why did we even bother?!}'' but, the misuse of this operator is the cause of many bugs, and much of the \emph{Mathematica} code you are likely to find on the internet contains a wild \texttt{:=} when it shouldn't. Straightening this out now will spare you headaches, and will promote friendship between you and your code.
+
+\section{Invoking Functions}
+
+\emph{Mathematica} has tons of built-in functions. 
