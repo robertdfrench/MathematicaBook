@@ -12,34 +12,67 @@ and if you don't, that's quite alright. Just see the section ``\emph{\nameref{ch
 The first thing we need to know in any language is how to assign variables. Probably you are thinking ``\emph{I learned this in CSCI 1010!}'', but \emph{Mathematica} is a subtle language, and does not always work as you might expect if you are coming from C++ or FORTRAN.
 
 \begin{code}
-i = 1;
-j = 2
-k := 3;
-l := 4
+	(* Cell 1 *)
+	i = 1;
+	j = 2
+	k := 3;
+	l := 4
 \end{code}
 
 Looking at this example, we can see that there are four slightly different ways to ``assign'' values to a variable, so let's discuss this a bit. If you put this code into a \emph{Mathematica} cell, you will see that, upon evaluating the cell, it will output:
 
 \begin{code}
 2
-4
 \end{code}
 
-So, if we assigned four numbers to four variables, why do we only see two outputs? The key here is the semicolon (;) at the end of the first and third lines. This tells \emph{Mathematica} to suppress the output of that calculation. Generally, it is appropriate to put a semicolon at the end of every line of code in a cell except for the last one. This is because you \emph{usually} want to group your code into cells in such a way that each cell achieves one result, computes one item (or related set of items), or builds one data structure. When debugging, it can sometimes be handy to remove individual semicolons in order to investigate whether each line behaves as you expect.
+So, if we assigned four numbers to four variables, why do we only see one output? The are two key items here. One is the semicolon (;) at the end of the first and third lines. This tells \emph{Mathematica} to suppress the output of that calculation. Generally, it is appropriate to put a semicolon at the end of every line of code in a cell except for the last one. This is because you \emph{usually} want to group your code into cells in such a way that each cell achieves one result, computes one item (or related set of items), or builds one data structure. When debugging, it can sometimes be handy to remove individual semicolons in order to investigate whether each line behaves as you expect.
 
-Now, what is the deal with the \texttt{:=} operator? This is called the \emph{delayed evaluation} operator. This is different from the standard \texttt{=} sign in one important way: it does not assign the value to that variable immediately. Rather, it tells \emph{Mathematica} to wait until your program is running\footnote{This is called \emph{runtime}. Computer Scientists are a clever lot, aren't they?} and then evaluate the right hand side of that expression. 
+The second key item is the \texttt{:=} operator. This is called the \emph{Set Delayed} operator. This is different from the standard \texttt{=} sign\footnote{also called the \emph{Set} operator} in one important way: it does not assign the value to that variable immediately. Rather, it tells \emph{Mathematica} to wait until \texttt{k} or \texttt{j} is used and then evaluate the right hand side of that expression. 
 
-What that means, in terms of the above example, is that, at the moment of evaluation, \texttt{i} and \texttt{j} are numeric variables that contain the values 1 and 2, but \texttt{k} and \texttt{l} are just symbols that do not yet contain any value. Let's investigate this:
+What that means, in terms of the above example, is that, at the moment of evaluation, \texttt{i} and \texttt{j} are numeric variables that contain the values 1 and 2, but \texttt{k} and \texttt{l} are just symbols that do not yet contain any value. This might be hard to see with the previous example, so let's look at one that's slightly more involved:
 
 \begin{code}
-	   Head[i]
-	   Head[k]
+	   (* Cell 2 *)
+	   i = 1;
+	   j = i + 10
+	   k := i + 10
 \end{code}
 
-You can see that the \texttt{Head} function returns different results for \texttt{i} and \texttt{j}. This should give you some indication that they are fundamentally different structures, even though the code used to create them looks very similar. 
+When we evaluate this code, we see that the output is simply \texttt{11}\footnote{Using what we discussed earlier, can you figure out why this is? See problem 1}. Now we set up a short experiment: We create a few separate cells, and examine what happens to \texttt{j} and \texttt{k} when we change the value of \texttt{i}.
+
+\begin{code}
+	   (* Cell 3 *)
+	   \{j,k\}
+
+	   (* Cell 4 *)
+	   i = 2;
+	   \{j,k\}
+
+	   (* Cell 5 *)
+	   i = 20;
+	   \{j,k\}
+
+	   (* Cell 6 *)
+	   i = x;
+	   \{j,k\}
+\end{code}
+
+When we evaluate these cells, we note that they each produce an ordered pair (also called a \emph{list}) as output. This is just to help us see what happens to \texttt{i} and \texttt{j} when we change the value of \texttt{i}.
+
+In Cell 3, nothing interest happens. We note that \texttt{i} and \texttt{j} are both \texttt{11} like we expected them to be. But now let's evaluate Cell 4 and see what happens. The output from Cell 4 tells us that \texttt{j} is still \texttt{11}, but that \texttt{k} has been updated to reflect the new value of \texttt{i}. This is because the definition we gave for \texttt{k} in Cell 2 is re-evaluated \emph{every time} we use \texttt{k} in an expression.
+
+If we evaluate Cell 5, we see the same thing has happened: \texttt{j} is still \texttt{11}, but \texttt{k} is now \texttt{30}, reflecting the fact that we changed the value of \texttt{i} again.
+
+When you evaluate Cell 6, you will see that is does something slightly different. The explaination is simple, but we leave it as an exercise so that you are forced to think about it!
 
 Delayed Evaluation is most frequently used when defining functions (See \nameref{chap:Functions}). For now, this is as far as we need to go with this topic. You might be thinking: ``\emph{Then why did we even bother?!}'' but, the misuse of this operator is the cause of many bugs, and much of the \emph{Mathematica} code you are likely to find on the internet contains a wild \texttt{:=} when it shouldn't. Straightening this out now will spare you headaches, and will promote friendship between you and your code.
 
 \section{Invoking Functions}
 
-\emph{Mathematica} has tons of built-in functions. 
+In \emph{Mathematica}, the \emph{invocation operator} is \texttt{[]}. 
+
+{\bf Exercises}. 
+\begin{enumerate}
+	   \item Explain why the code in Cell 2 produces only the single output of \texttt{11}
+	   \item Explain why Cell 6 produces \texttt{\{11,x + 10\}} as an output.
+\end{enumerate}
