@@ -1,3 +1,27 @@
 \chapter{Lists and Map}
 \label{chap:ListsMap}
-This chapter introduces what computer scientists refer to as \emph{functional programming}. 
+This chapter introduces what computer scientists refer to as \emph{functional programming}. To understand some of the impact of this, we begin by discussing the fundamental data structure of functional programming, the List.
+
+A List is similar to an \emph{array} that you might have encountered in other programming languages. One of the main differences is that Lists are designed to grow, whereas arrays are designed to take up a fixed amount of memory.
+
+Lists in \emph{Mathematica} can be constructed very simply by the following statement:
+\begin{code}
+	   A = List[];
+\end{code}
+or equivalently
+\begin{code}
+	   A = {};
+\end{code}
+however, the former style should be preferred as it is more explicit\footnote{Good programmers always aim for their code to be \emph{clear} and \emph{explicit}. This makes it easier for others to read their code and understand its meaning, and that is good for friendship}. Lists can be grown by \emph{appending} to elements to them. For example, in order to create the list $1,2,3,4$, we could do the following:
+\begin{code}
+	   AppendTo[A, 1];
+	   AppendTo[A, 2];
+	   AppendTo[A, 3];
+	   AppendTo[A, 4];
+\end{code}
+
+Of course, we could also define this list explicitly as follows:
+\begin{code}
+	   A = {1,2,3,4};
+\end{code}
+and this is of course much more concise. Generally, if a list can be defined without doing any calculations, i.e. if it is a constant, you will define it all at once as we have done here. However, if the list must be built up programmatically, it is necessary to use the \texttt{AppendTo} function as described above.
