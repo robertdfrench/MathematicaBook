@@ -10,10 +10,29 @@ What might have happened? Did she make a typo while rearranging the code? Do Nel
 
 Version Control is, in general, a way of keeping track of changes to files across a team of people (even if it is only a team of one!). Version Control systems are programs that you can install on your computer that will note the changes you make to your code in a way that allows you to access specific versions of your code at any time.
 
+At first, this may sound like a simple backup system, and version control can certainly act as a backup system, but there are more powerful features than that. For example, version control systems allow you to maintain \emph{multiple histories} of a file. This can be useful when you want to experiment with your code. Nell may be brainstorming an improvement she wants to make to the way that graphs are stored, using a SparseMatrix instead of a List of Lists. With version control, she can ``branch'' from the current development history into a separate \emph{parallel} history so that her experiment will not affect Ben and Raman. If Nell's idea works, she can ``merge'' her branch back into the main history. If it doesn't, she can simply discard it. Either way, it is clear that trying this with a backup system or a set of shared folders would lead to a disorganization nightmare for the team.
+
 \section{Using Git}
 
-Git is awesome.
+Git is an excellent version control system. You can learn how to install it by going to \href{http://git-scm.org}{git-scm.org}. The basic operations in Git are as follows:
 
-\section{Sharing Repositories on GitHub}
+\begin{code}
+	   # Creates a new repository
+	   \$ git init
+\end{code}
+Which will create a new repository. The repository is simply the database that keeps track of changes you make to all the files in a given folder. When you make a change to a file, tell Git about it by typing
+\begin{code}
+	   \$ git add BenNellRaman_Research.nb
+\end{code}
+when you have made a set of changes that you would like to be stored in the repository's history, you need to ``commit'' those changes:
+\begin{code}
+	   \$ git commit -am ``Storage Algorithm now uses SparseMatrix for more efficiency''
+\end{code}
 
-Use GitHub or git left behind.
+\section{Sharing Repositories on GitHub} 
+
+The easiest way to keep a shared repository for your team is for everyone to create an account on \href{http://www.github.com}{GitHub}. GitHub is a free service for hosting open source projects using git. 
+
+TODO setting up repo
+
+TODO giving push access

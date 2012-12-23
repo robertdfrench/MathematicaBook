@@ -25,3 +25,20 @@ Of course, we could also define this list explicitly as follows:
 	   A = {1,2,3,4};
 \end{code}
 and this is of course much more concise. Generally, if a list can be defined without doing any calculations, i.e. if it is a constant, you will define it all at once as we have done here. However, if the list must be built up programmatically, it is necessary to use the \texttt{AppendTo} function as described above.
+
+We can also access list elements directly by using the \texttt{[[]]} operator. For example, to get the first element of \texttt{A}, we do as follows:
+\begin{code}
+	   A[[1]]
+\end{code}
+Note that unlike most programming languages, \emph{Mathematica} begins indexing lists with \texttt{1} rather than \texttt{0}. This is good, because it is in keeping with most mathematical notation for dealing with vectors and matrices. We can also assign values explicitly to a list by using the \texttt{[[]]=} operator like so:
+\begin{code}
+	   A[[2]] = 5;
+\end{code}
+
+TODO: Can we use DelaySet on a list element? What is the effect of this?
+
+You cannot grow a list in this fashion. That is, for a list like \texttt{A} that has 4 elements, you cannot add a fifth element by 
+\begin{code}
+	   A[[5]] = 5.0;
+\end{code}
+This is because, like arrays in C or Java, lists have a fixed width, and \emph{Mathematica} will not allocate more memory for them unless you explicitly tell it to (using the \texttt{AppendTo} function).\footnote{This is a much different model than languages like Perl or Ruby that automatically grow an array when you make an ``out of bounds'' assignment. This strategy, while handy, can slow down your program because memory will be allocated frequently in small chunks rather than infrequently in large chunks.}
