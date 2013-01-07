@@ -25,9 +25,11 @@ There are also keyboard shortcuts for many of the symbols in the palette. For ex
 
 Likewise, to type $x^3$, you simply type ``x'' and then ``Ctrl+6'' and then \emph{Mathematica} will give you a black box above and to the right of the ``x'' character and move your cursor there. Then type ``3'', and you will have $x^3$.
 
+You can of course combine elements in expression boxes. For example, to write $x^{\frac{2}{3}}$, you can type ``x'' and then ``Ctrl+6'' to get an expression box in the exponent position, then type ``Ctrl+/'' to turn that box into a fraction, then hit ``2'', ``Tab'', and then ``3''.
+
 \subsection{$\pi$, $\theta$, and $alpha$}
 
-Using the ``Esc'' button, you can generate these symbols. ``Esc+pi+Esc'' will get you the $\pi$ symbol. You can look at Table \ref{tab:SymbolTable} to see a longer list of symbols. These symbols are also available in the ``Basic Math Input'' palette.
+Using the ``Esc'' button, you can generate these symbols. ``Esc+pi+Esc'' will get you the $\pi$ symbol. You can look at Table \ref{tab:GreekLettersTable} to see a longer list of symbols. These symbols are also available in the ``Basic Math Input'' palette.
 
 \begin{table}
 	   \centering
@@ -36,10 +38,13 @@ Using the ``Esc'' button, you can generate these symbols. ``Esc+pi+Esc'' will ge
 			 $\pi$ & ``Esc'' pi ``Esc'' \\
 			 $\alpha$ & ``Esc'' alpha ``Esc'' \\
 			 $\beta$ & ``Esc'' beta ``Esc'' \\
+			 $\theta$ & ``Esc'' theta ``Esc'' \\
+			 $\phi$ & ``Esc'' phi ``Esc'' \\
+			 $\eta$ & ``Esc'' eta ``Esc'' \\
 			 $\chi$ & ``Esc'' chi ``Esc'' \\
 	   \end{tabular}
-	   \caption{A table of symbols}
-	   \label{tab:SymbolTable}
+	   \caption{A table of greek letters}
+	   \label{tab:GreekLettersTable}
 \end{table}
 
 \subsection{Sums, Integrals, and Derivatives}
@@ -53,4 +58,35 @@ These are best accessed by using the corresponding buttons in the ``Basic Math I
 \end{enumerate}
 
 \section{Functions}
-\emph{Mathematica} has tons of built-in functions. It has trig functions like \texttt{Sin} and \texttt{Cos}. It also has functions for plotting graphs and generating lists or tables of data (see ``\nameref{chap:Plotting}'' and ``\nameref{chap:ListsMap}'').
+\emph{Mathematica} has tons of built-in functions. It has trig functions like \texttt{Sin} and \texttt{Cos}. It also has functions for plotting graphs and generating lists or tables of data (see ``\nameref{chap:Plotting}'' and ``\nameref{chap:ListsMap}''). In addition, you can create your own functions, but that will be discussed in Chapter \ref{chap:Functions} \nameref{chap:Functions}. For now, it is important to go over a few basics about how functions work in \emph{Mathematica}.
+
+For example, we know from trig that $\sin(\frac{\pi}{2}) = 1$. To see this for yourself in \emph{Mathematica}, type the following into a cell:
+
+\begin{code}
+	   Sin[pi/2]
+\end{code}
+and press ``Shift+Enter'' to evaluate the cell. Below, you will see an output cell generated containing the number 1. However, there are other functions in \emph{Mathematica} aside from normal math functions. For example, you can use the \texttt{Map} function to produce a list of sine values for a given set of domain points. 
+
+To see what we are talking about more clearly, let's consider the set $(0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}, 2\pi)$. We can calculate the corresponding range values very simply by applying \texttt{Sin} to these values via \texttt{Map}.
+
+\begin{code}
+	   Map[Sin, {0, pi/2, pi, 3pi/2, 2pi}]
+\end{code}
+and you will see that this produces the ranges values $(0, 1, 0, -1, 0)$.
+
+\section{Variables}
+\emph{Mathematica}'s variables are very simple. Variables can hold numbers, lists, matrices, functions, symbols, or graphs. For now, we will just look at how to store some numbers as variables and see how it affects a plot.
+
+\begin{code}
+	   Amplitude = 1;
+	   UpperBound = 10;
+	   Plot[Amplitude * Sin[x], {x, 0, UpperBound}]
+\end{code}
+
+When you execute this, you will see that $\sin(x)$ will be drawn on the interval $(0,10)$. Try doing the following by changing the values for \texttt{Amplitude} and \texttt{UpperBound}:
+
+\begin{enumerate}
+	   \item Plot $2\sin(x)$ on $(0,10)$
+	   \item Plot $-\sin(x)$ on $(0,10)$
+	   \item Plot $\pi\sin(x)$ on $(0, 2 \pi)$
+\end{enumerate}
