@@ -69,7 +69,19 @@ Delayed Evaluation is most frequently used when defining functions (See \nameref
 
 \section{Invoking Functions}
 
-In \emph{Mathematica}, the \emph{invocation operator} is \texttt{[]}. 
+In \emph{Mathematica}, the \emph{invocation operator} is \texttt{[]}. This means that, given a function \texttt{F}, you can invoke it on an argument \texttt{x} by writing \texttt{F[x]}. If you do not use the invocation operator, your function will be treated like a variable. Let us look at how this works in a few different scenarios:
+
+\begin{code}
+	   Cos[0]
+\end{code}
+
+Evaluating the above cell will give you an output cell containing the numebr 1. This is an example of invoking the \texttt{Cos} function directly for a single argument. If we want to evaluate \texttt{Cos} for a list of arguments, we can instead treat it as a variable and pass it as an argument to the function \texttt{Map}:
+
+\begin{code}
+	   Map[Cos, {0, 0.1, 0.2, 0.3, 0.4, 0.5}]
+\end{code}
+
+Evaluating this cell will give you all of the values for \texttt{Cos} for the domain points $(0, 0.1, \dots, 0.5)$. The difference here is that we did not invoke the \texttt{Cos} function directly, but rather we passed it as a variable to the \texttt{Map} function, which applied \texttt{Cos} in turn to each of the data points in our list. 
 
 {\bf Exercises}. 
 \begin{enumerate}

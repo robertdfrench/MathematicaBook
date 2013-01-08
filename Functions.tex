@@ -3,3 +3,20 @@
 
 \section{Plotting Your Functions}
 
+\section{Accepting Functions as Arguments}
+
+Frequently it is useful to take a second function as an argument for a function you have defined. There are no specific use cases for this, but if you are familiar with the technique, you will be able to recognize when it will be helpful.
+
+As an example, let's say that you are preparing a report and you would like all of your graphs to be displayed uniformly. You could manually go throuhg your code and set all of your \texttt{Plot} settings to be the same, or you could define a single abstract function to take certain arguments and plot all of your graphs in the same style.
+
+Let's assume that in this report, we will be plotting a comparions of \emph{Exact Solutions} versus \emph{Approximate Solutions} for a set of differential equations. That means we want our custom plot function to take two arguments
+\begin{enumerate}
+	   \item The Exact Solution as a \emph{Mathematica} function
+	   \item The Approximate Solution as a list of points to plot
+\end{enumerate}
+so we know that the \emph{signature} of our function will look like the following:
+\begin{code}
+	   AwesomePlot[ExactSoln_, ApproxSoln_, \{x,LowerBound_,UpperBound_\}] :=
+\end{code}
+
+This is because we will need to accept not only the Exact Solution and the Approximate Solution, but also the interval on which those solutions should be plotted. This is part of the normal information we would pass to \texttt{Plot}.\footnote{You may recall that normally \texttt{Plot} is invoked by using an expression, not a function variable, as the first argument (i.e. \texttt{Plot[Sin[2 x], {x,0,1}]}). This is because \texttt{Plot} evaluates its arguments in a non-standard way. TODO: List settings. It is defined in such a way that the first argument is ``Held''. TODO: Section on hold evaluations}.
