@@ -1,7 +1,8 @@
 \chapter{Defining Your Own Functions}
 \label{chap:Functions}
 
-\section{Plotting Your Functions}
+Plotting your functions is 
+
 
 \section{Accepting Functions as Arguments}
 
@@ -16,7 +17,26 @@ Let's assume that in this report, we will be plotting a comparions of \emph{Exac
 \end{enumerate}
 so we know that the \emph{signature} of our function will look like the following:
 \begin{code}
-	   AwesomePlot[ExactSoln_, ApproxSoln_, \{x,LowerBound_,UpperBound_\}] :=
+	   AwesomePlot[ExactSoln_, ApproxSoln_, LowerBound_, UpperBound_] :=
 \end{code}
 
-This is because we will need to accept not only the Exact Solution and the Approximate Solution, but also the interval on which those solutions should be plotted. This is part of the normal information we would pass to \texttt{Plot}.\footnote{You may recall that normally \texttt{Plot} is invoked by using an expression, not a function variable, as the first argument (i.e. \texttt{Plot[Sin[2 x], {x,0,1}]}). This is because \texttt{Plot} evaluates its arguments in a non-standard way. TODO: List settings. It is defined in such a way that the first argument is ``Held''. TODO: Section on hold evaluations}.
+This is because we will need to accept not only the Exact Solution and the Approximate Solution, but also the interval on which those solutions should be plotted. This is part of the normal information we would pass to \texttt{Plot}.\footnote{You may recall that normally \texttt{Plot} is invoked by using an expression, not a function variable, as the first argument (i.e. \texttt{Plot[Sin[2 x], {x,0,1}]}). This is because \texttt{Plot} evaluates its arguments in a non-standard way. TODO: List settings. It is defined in such a way that the first argument is ``Held''. TODO: Section on hold evaluations}. Now we want to display both of these functions on the same graph, preferebly in different colors, so that we may compare them. Thus the body of our function may look like:
+
+\begin{code}
+	   ExactGraph = Plot[ExactSoln[x], {x, LowerBound, UpperBound}, PlotStyle -> Blue];
+
+	   N = Length[ApproxSoln];
+	   StepSize = (UpperBound - LowerBound)/(N - 1);
+	   ApproxPoints = Table[{ApproxSoln[[i]],(i - 1) * StepSize + LowerBound},{i,1,N}];
+	   ApproxGraph = ListPlot[ApproxPoints, PlotStyle -> Red];
+	   Show[ExactGraph, ApproxGraph]
+\end{code}
+
+And we can see that this will form a very handy tool that will make sure all of the plots in your report are very consistent, and it will make your code much, much cleaner.
+
+\textbf{Exercises}.
+\begin{enumerate}
+	   \item Consider the code given for \texttt{AwesomePlot} and explain why \texttt{N - 1} yields a more accurate \texttt{StepSize} than \texttt{N} would.
+	   \item Expand the code for \texttt{AwesomePlot} so that it takes a string to use as the title for the plot
+	   \item Expand the code for \texttt{AwesomePlot} so that it automatically labels plots as ``Figure 1'', ``Figure 2'', etc without explicitly taking an argument. Hint: It should contain a variable that gets incremented every time you call \texttt{AwesomePlot}. 
+\end{enumerate}
