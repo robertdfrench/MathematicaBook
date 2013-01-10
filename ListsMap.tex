@@ -1,4 +1,4 @@
-\chapter{Lists and Map}
+\chapter{Lists, \texttt{Map}, and \texttt{Table}}
 \label{chap:ListsMap}
 This chapter introduces what computer scientists refer to as \emph{functional programming}. To understand some of the impact of this, we begin by discussing the fundamental data structure of functional programming, the List.
 
@@ -42,3 +42,9 @@ You cannot grow a list in this fashion. That is, for a list like \texttt{A} that
 	   A[[5]] = 5.0;
 \end{code}
 This is because, like arrays in C or Java, lists have a fixed width, and \emph{Mathematica} will not allocate more memory for them unless you explicitly tell it to (using the \texttt{AppendTo} function).\footnote{This is a much different model than languages like Perl or Ruby that automatically grow an array when you make an ``out of bounds'' assignment. This strategy, while handy, can slow down your program because memory will be allocated frequently in small chunks rather than infrequently in large chunks.}
+
+\section{The \texttt{Map} Function}
+
+\section{The \texttt{Table} Function}
+
+\section{Vectors, Matrices, and Higher Lists of Lists}
