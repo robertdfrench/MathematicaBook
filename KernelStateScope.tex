@@ -19,8 +19,28 @@ In \emph{Mathematica}, all of your coding is done in a \emph{notebook}, and all 
 	   \item You can run computations on multiple kernels \emph{on other computers}
 \end{enumerate}
 
-
-
 So we see that this separation of kernel and notebook is very powerful. But what does it mean in terms of your research? Specifically, while you are working on your code, the values you calculate and the variables you assign them to will be stored in your ``Local Kernel''. This assignment of values to variables is called ``State'', and it's just a fancy computer science term for ``The values of your variables at a given time''.
 
-\subsection{Quitting the Kernel}. This is kindof like an emergency reset for your program. Quitting the Kernel will basically erase the values for all the variables in your notebook (because they are stored in this separate program which you are about to quit).
+Most of the time, these are just technical points that can be ignored, but understanding how the kernel works will make all the difference in the world when you begin to debug your research program.
+
+\subsection{Quitting the Kernel}. This is kindof like an emergency reset for your program. Quitting the Kernel will basically erase the values for all the variables in your notebook (because they are stored in this separate program which you are about to quit). For example, open a new notebook and evaluate the following code:
+
+\begin{code}
+	   (* Cell 1 *)
+	   NumEggs = 5
+\end{code}
+
+Now, in a new cell, evaluate this code:
+
+\begin{code}
+	(* Cell 2 *)
+	Print[``There Are '' <> ToString[NumEggs] <> `` eggs in a Programmer's Dozen''];
+\end{code}
+
+And \emph{Mathematica} will display the text ``There are 5 eggs in a Programmer's Dozen''\footnote{As opposed to 13 in a ''Baker's Dozen``}. Now go up to the menu and select ''Kernel`` $\rightarrow$ ''Quit Kernel`` $\rightarrow$ ''Local``. This will cause the kernel you are using to go away, and your variable state will go away with it. Now re-evaluate Cell 2 and see what you get. It will tell you that there are ''NumEggs`` in a Programmer's Dozen. Wait\ldots What?
+
+What's happening here is that when \emph{Mathematica} tries to find a value for the variable \texttt{NumEggs}, it notices that one does not exist, so in order to keep your code from exploding\footnote{which is what would happen in other dynamic languages like Ruby or PHP} a value is fabricated for you. The value given is a \emph{symbol object}, which is just a placeholder, kinda like a string, which corresponds to the name ``NumEggs''.
+
+Symbols will be discussed in more detail in Chapter \ref{chap:Symbols}, but for now they aren't important. The thing to focus on here is that the variable \texttt{NumEggs} no longer contains the value \texttt{5} because you quit the kernel in which it was stored.
+
+\subsection{Debugging with a Secondary Notebook}. When dealing with large \emph{Mathematica} projects, it can sometimes be handy to play around with a particular line of code, or analyze the output from one section before going on to the next cell. You could do this all in one notebook, but that could get sloppy, and you run the risk of messing up some code that is already working\footnote{Although, you are protecting yourself from code loss by using version control, right? If not, check out Appendix \ref{chap:GitHub}, ``\nameref{chap:GitHub}''}

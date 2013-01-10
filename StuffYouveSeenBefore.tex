@@ -82,9 +82,28 @@ Evaluating the above cell will give you an output cell containing the numebr 1. 
 \end{code}
 
 Evaluating this cell will give you all of the values for \texttt{Cos} for the domain points $(0, 0.1, \dots, 0.5)$. The difference here is that we did not invoke the \texttt{Cos} function directly, but rather we passed it as a variable to the \texttt{Map} function, which applied \texttt{Cos} in turn to each of the data points in our list. 
+Some functions are \emph{listable}, which means that when passed a list, they automatically act on each element of the list separately. For example, all of the built-in trig functions are listable, so instead of using \texttt{Map} as we have above, we could instead write:
+
+\begin{code}
+	   Cos[{0, 0.1, 0.2, 0.3, 0.4, 0.5}]
+\end{code}
+
+Taking advantage of listable functions allows you to write code that is more elegant and compact\footnote{As with anything, it is possible to go overboard with this technique and write code that is utterly incomprehensible. Use it when it makes sense, and avoid it when you think it might be confusing. Code that is easy to read will win you the respect of peers and professors alike}. Many other arithmetic operations are also listable, like addition, multiplication, and exponents. 
+
+We can put the famous trig identity $\sin^2(\theta) + \cos^2(\theta) = 1$ to the test with the following code:
+
+\begin{code}
+	   (* Cell 7 *)
+	   thetaValues = {0, pi/4, pi/2};
+	   Sin[thetaValues]^2 + Cos[thetaValues]^2
+\end{code}
+
+Evaluate this and you will see an output cell containing $\{1,1,1\}$.\footnote{It is worth your while to play around with this code until it ``clicks'' for you} Of course, not all functions are listable, and sometimes using this feature can make your code harder to read and thus debug. That is why \texttt{Map} is a trustworthy alternative. 
 
 {\bf Exercises}. 
 \begin{enumerate}
 	   \item Explain why the code in Cell 2 produces only the single output of \texttt{11}
 	   \item Explain why Cell 6 produces \texttt{\{11,x + 10\}} as an output.
+	   \item Explain, using as much detail as you can, what is happening in Cell 7.
+	   \item Think about scalar multiplication and vector addition from Linear Algebra. Do you think these operations could be expressed as listable functions in \emph{Mathematica}? Why or why not?
 \end{enumerate}
