@@ -1,7 +1,4 @@
-## An Introduction to 
-*Mathematica* Programming
-#########################
-## for Undergraduate Research
+# An Introduction to *Mathematica* Programming for Undergraduate Research
 
 by Robert D. French and Dr. Samuel N. Jator
 
