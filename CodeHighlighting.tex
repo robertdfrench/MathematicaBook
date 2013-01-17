@@ -1,0 +1,15 @@
+\newenvironment{code}%
+{\begin{quote}\ttfamily}%
+{\rmfamily\end{quote}}
+
+\newcommand{\expr}[1]{\ttfamily{#1}\rmfamily}
+
+\newcommand{\MPlot}[3]{
+	\begin{figure}[t]
+	\centering
+	\includegraphics{figures/{#1}/{#2}}
+	\caption{#3}
+	\label{fig:{#1}_{#2}}
+	\end{figure}
+}
+
