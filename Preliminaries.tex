@@ -58,19 +58,19 @@ These are best accessed by using the corresponding buttons in the ``Basic Math I
 \end{enumerate}
 
 \section{Functions}
-\emph{Mathematica} has tons of built-in functions. It has trig functions like \texttt{Sin} and \texttt{Cos}. It also has functions for plotting graphs and generating lists or tables of data (see ``\nameref{chap:Plotting}'' and ``\nameref{chap:ListsMap}''). In addition, you can create your own functions, but that will be discussed in Chapter \ref{chap:Functions} \nameref{chap:Functions}. For now, it is important to go over a few basics about how functions work in \emph{Mathematica}.
+\emph{Mathematica} has tons of built-in functions. It has trig functions like \expr{Sin} and \expr{Cos}. It also has functions for plotting graphs and generating lists or tables of data (see ``\nameref{chap:Plotting}'' and ``\nameref{chap:ListsMap}''). In addition, you can create your own functions, but that will be discussed in Chapter \ref{chap:Functions} \nameref{chap:Functions}. For now, it is important to go over a few basics about how functions work in \emph{Mathematica}.
 
 For example, we know from trig that $\sin(\frac{\pi}{2}) = 1$. To see this for yourself in \emph{Mathematica}, type the following into a cell:
 
 \begin{code}
-	   Sin[pi/2]
+	   Sin[$\frac{\pi}{2}$]
 \end{code}
-and press ``Shift+Enter'' to evaluate the cell. Below, you will see an output cell generated containing the number 1. However, there are other functions in \emph{Mathematica} aside from normal math functions. For example, you can use the \texttt{Map} function to produce a list of sine values for a given set of domain points. 
+and press ``Shift+Enter'' to evaluate the cell. Below, you will see an output cell generated containing the number 1. However, there are other functions in \emph{Mathematica} aside from normal math functions. For example, you can use the \expr{Map} function to produce a list of sine values for a given set of domain points. 
 
-To see what we are talking about more clearly, let's consider the set $(0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}, 2\pi)$. We can calculate the corresponding range values very simply by applying \texttt{Sin} to these values via \texttt{Map}.
+To see what we are talking about more clearly, let's consider the set $(0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}, 2\pi)$. We can calculate the corresponding range values very simply by applying \expr{Sin} to these values via \expr{Map}.
 
 \begin{code}
-	   Map[Sin, {0, pi/2, pi, 3pi/2, 2pi}]
+	   Map[Sin, \{0, $\frac{\pi}{2}$, $\pi$, $\frac{3\pi}{2}$, $2\pi$\}]
 \end{code}
 and you will see that this produces the ranges values $(0, 1, 0, -1, 0)$.
 
@@ -83,14 +83,16 @@ and you will see that this produces the ranges values $(0, 1, 0, -1, 0)$.
 	   Plot[Amplitude * Sin[x], {x, 0, UpperBound}]
 \end{code}
 
-\begin{figure}[t]
-\centering
-\includegraphics{figures/Preliminaries/SineWithAmplitudeAndUpperBound}
-\caption{Output from the above Cell}
-\label{fig:Preliminaries_SineWithAmplitudeAndUpperBound}
-\end{figure}
+%\begin{figure}[t]
+%\centering
+%\includegraphics{figures/Preliminaries/SineWithAmplitudeAndUpperBound}
+%\caption{\expr{Sin[x]} on $[0,10]$}
+%\label{fig:Preliminaries_SineWithAmplitudeAndUpperBound}
+%\end{figure}
 
-When you execute this, you will see that $\sin(x)$ will be drawn on the interval $(0,10)$. Try doing the following by changing the values for \texttt{Amplitude} and \texttt{UpperBound}:
+\MPlot{Preliminaries}{SineWithAmplitudeAndUpperBound}{\expr{Sin[x]} on $[0,10]$}
+
+When you execute this, you will see that $\sin(x)$ will be drawn on the interval $[0,10]$, as depicted in Figure \ref{fig:Preliminaries_SineWithAmplitudeAndUpperBound}. Try doing the following by changing the values for \expr{Amplitude} and \expr{UpperBound}:
 
 
 \begin{enumerate}

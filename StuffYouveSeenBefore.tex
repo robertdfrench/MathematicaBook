@@ -12,10 +12,10 @@ and if you don't, that's quite alright. Just see the section ``\emph{\nameref{ch
 The first thing we need to know in any language is how to assign variables. Probably you are thinking ``\emph{I learned this in CSCI 1010!}'', but \emph{Mathematica} is a subtle language, and does not always work as you might expect if you are coming from C++ or FORTRAN.
 
 \begin{code}
-	(* Cell 1 *)
-	i = 1;
-	j = 2
-	k := 3;
+	(* Cell 1 *)\\
+	i = 1;\\
+	j = 2\\
+	k := 3;\\
 	l := 4
 \end{code}
 
@@ -27,65 +27,71 @@ Looking at this example, we can see that there are four slightly different ways 
 
 So, if we assigned four numbers to four variables, why do we only see one output? The are two key items here. One is the semicolon (;) at the end of the first and third lines. This tells \emph{Mathematica} to suppress the output of that calculation. Generally, it is appropriate to put a semicolon at the end of every line of code in a cell except for the last one. This is because you \emph{usually} want to group your code into cells in such a way that each cell achieves one result, computes one item (or related set of items), or builds one data structure. When debugging, it can sometimes be handy to remove individual semicolons in order to investigate whether each line behaves as you expect.
 
-The second key item is the \texttt{:=} operator. This is called the \emph{Set Delayed} operator. This is different from the standard \texttt{=} sign\footnote{also called the \emph{Set} operator} in one important way: it does not assign the value to that variable immediately. Rather, it tells \emph{Mathematica} to wait until \texttt{k} or \texttt{j} is used and then evaluate the right hand side of that expression. 
+The second key item is the \expr{:=} operator. This is called the \emph{Set Delayed} operator. This is different from the standard \expr{=} sign\footnote{also called the \emph{Set} operator} in one important way: it does not assign the value to that variable immediately. Rather, it tells \emph{Mathematica} to wait until \expr{k} or \expr{j} is used and then evaluate the right hand side of that expression. 
 
-What that means, in terms of the above example, is that, at the moment of evaluation, \texttt{i} and \texttt{j} are numeric variables that contain the values 1 and 2, but \texttt{k} and \texttt{l} are just symbols that do not yet contain any value. This might be hard to see with the previous example, so let's look at one that's slightly more involved:
+What that means, in terms of the above example, is that, at the moment of evaluation, \expr{i} and \expr{j} are numeric variables that contain the values 1 and 2, but \expr{k} and \expr{l} are just symbols that do not yet contain any value. This might be hard to see with the previous example, so let's look at one that's slightly more involved:
 
 \begin{code}
-	   (* Cell 2 *)
-	   i = 1;
-	   j = i + 10
+	   (* Cell 2 *)\\
+	   i = 1;\\
+	   j = i + 10\\
 	   k := i + 10
 \end{code}
 
-When we evaluate this code, we see that the output is simply \texttt{11}\footnote{Using what we discussed earlier, can you figure out why this is? See problem 1}. Now we set up a short experiment: We create a few separate cells, and examine what happens to \texttt{j} and \texttt{k} when we change the value of \texttt{i}.
+When we evaluate this code, we see that the output is simply \expr{11}\footnote{Using what we discussed earlier, can you figure out why this is? See problem 1}. Now we set up a short experiment: We create a few separate cells, and examine what happens to \expr{j} and \expr{k} when we change the value of \expr{i}.
 
 \begin{code}
-	   (* Cell 3 *)
-	   \{j,k\}
-
-	   (* Cell 4 *)
-	   i = 2;
-	   \{j,k\}
-
-	   (* Cell 5 *)
-	   i = 20;
-	   \{j,k\}
-
-	   (* Cell 6 *)
-	   i = x;
+	   (* Cell 3 *)\\
 	   \{j,k\}
 \end{code}
 
-When we evaluate these cells, we note that they each produce an ordered pair (also called a \emph{list}) as output. This is just to help us see what happens to \texttt{i} and \texttt{j} when we change the value of \texttt{i}.
+\begin{code}
+	   (* Cell 4 *)\\
+	   i = 2;\\
+	   \{j,k\}
+\end{code}
 
-In Cell 3, nothing interest happens. We note that \texttt{i} and \texttt{j} are both \texttt{11} like we expected them to be. But now let's evaluate Cell 4 and see what happens. The output from Cell 4 tells us that \texttt{j} is still \texttt{11}, but that \texttt{k} has been updated to reflect the new value of \texttt{i}. This is because the definition we gave for \texttt{k} in Cell 2 is re-evaluated \emph{every time} we use \texttt{k} in an expression.
+\begin{code}
+	   (* Cell 5 *)\\
+	   i = 20;\\
+	   \{j,k\}
+\end{code}
 
-If we evaluate Cell 5, we see the same thing has happened: \texttt{j} is still \texttt{11}, but \texttt{k} is now \texttt{30}, reflecting the fact that we changed the value of \texttt{i} again.
+\begin{code}
+	   (* Cell 6 *)\\
+	   i = x;\\
+	   \{j,k\}
+\end{code}
+
+When we evaluate these cells, we note that they each produce an ordered pair (also called a \emph{list}) as output. This is just to help us see what happens to \expr{i} and \expr{j} when we change the value of \expr{i}.
+
+In Cell 3, nothing interest happens. We note that \expr{i} and \expr{j} are both \expr{11} like we expected them to be. But now let's evaluate Cell 4 and see what happens. The output from Cell 4 tells us that \expr{j} is still \expr{11}, but that \expr{k} has been updated to reflect the new value of \expr{i}. This is because the definition we gave for \expr{k} in Cell 2 is re-evaluated \emph{every time} we use \expr{k} in an expression.
+
+If we evaluate Cell 5, we see the same thing has happened: \expr{j} is still \expr{11}, but \expr{k} is now \expr{30}, reflecting the fact that we changed the value of \expr{i} again.
 
 When you evaluate Cell 6, you will see that is does something slightly different. The explaination is simple, but we leave it as an exercise so that you are forced to think about it!
 
-Delayed Evaluation is most frequently used when defining functions (See \nameref{chap:Functions}). For now, this is as far as we need to go with this topic. You might be thinking: ``\emph{Then why did we even bother?!}'' but, the misuse of this operator is the cause of many bugs, and much of the \emph{Mathematica} code you are likely to find on the internet contains a wild \texttt{:=} when it shouldn't. Straightening this out now will spare you headaches, and will promote friendship between you and your code.
+Delayed Evaluation is most frequently used when defining functions (See \nameref{chap:Functions}). For now, this is as far as we need to go with this topic. You might be thinking: ``\emph{Then why did we even bother?!}'' but, the misuse of this operator is the cause of many bugs, and much of the \emph{Mathematica} code you are likely to find on the internet contains a wild \expr{:=} when it shouldn't. Straightening this out now will spare you headaches, and will promote friendship between you and your code.
 
 \section{Invoking Functions}
 
-In \emph{Mathematica}, the \emph{invocation operator} is \texttt{[]}. This means that, given a function \texttt{F}, you can invoke it on an argument \texttt{x} by writing \texttt{F[x]}. If you do not use the invocation operator, your function will be treated like a variable. Let us look at how this works in a few different scenarios:
+In \emph{Mathematica}, the \emph{invocation operator} is \expr{[]}. This means that, given a function \expr{F}, you can invoke it on an argument \expr{x} by writing \expr{F[x]}. If you do not use the invocation operator, your function will be treated like a variable. Let us look at how this works in a few different scenarios:
 
 \begin{code}
 	   Cos[0]
 \end{code}
 
-Evaluating the above cell will give you an output cell containing the numebr 1. This is an example of invoking the \texttt{Cos} function directly for a single argument. If we want to evaluate \texttt{Cos} for a list of arguments, we can instead treat it as a variable and pass it as an argument to the function \texttt{Map}:
+Evaluating the above cell will give you an output cell containing the numebr 1. This is an example of invoking the \expr{Cos} function directly for a single argument. If we want to evaluate \expr{Cos} for a list of arguments, we can instead treat it as a variable and pass it as an argument to the function \expr{Map}:
 
 \begin{code}
-	   Map[Cos, {0, 0.1, 0.2, 0.3, 0.4, 0.5}]
+	   Map[Cos, \{0, 0.1, 0.2, 0.3, 0.4, 0.5\}]
 \end{code}
 
-Evaluating this cell will give you all of the values for \texttt{Cos} for the domain points $(0, 0.1, \dots, 0.5)$. The difference here is that we did not invoke the \texttt{Cos} function directly, but rather we passed it as a variable to the \texttt{Map} function, which applied \texttt{Cos} in turn to each of the data points in our list. 
-Some functions are \emph{listable}, which means that when passed a list, they automatically act on each element of the list separately. For example, all of the built-in trig functions are listable, so instead of using \texttt{Map} as we have above, we could instead write:
+Evaluating this cell will give you all of the values for \expr{Cos} for the domain points $(0, 0.1, \dots, 0.5)$. The difference here is that we did not invoke the \expr{Cos} function directly, but rather we passed it as a variable to the \expr{Map} function, which applied \expr{Cos} in turn to each of the data points in our list. 
+Some functions are \emph{listable}, which means that when passed a list, they automatically act on each element of the list separately. For example, all of the built-in trig functions are listable, so instead of using \expr{Map} as we have above, we could instead write:
 
 \begin{code}
-	   Cos[{0, 0.1, 0.2, 0.3, 0.4, 0.5}]
+	   Cos[\{0, 0.1, 0.2, 0.3, 0.4, 0.5\}]
 \end{code}
 
 Taking advantage of listable functions allows you to write code that is more elegant and compact\footnote{As with anything, it is possible to go overboard with this technique and write code that is utterly incomprehensible. Use it when it makes sense, and avoid it when you think it might be confusing. Code that is easy to read will win you the respect of peers and professors alike}. Many other arithmetic operations are also listable, like addition, multiplication, and exponents. 
@@ -93,17 +99,17 @@ Taking advantage of listable functions allows you to write code that is more ele
 We can put the famous trig identity $\sin^2(\theta) + \cos^2(\theta) = 1$ to the test with the following code:
 
 \begin{code}
-	   (* Cell 7 *)
-	   thetaValues = {0, pi/4, pi/2};
-	   Sin[thetaValues]^2 + Cos[thetaValues]^2
+	   (* Cell 7 *)\\
+	   thetaValues = \{0, $\frac{\pi}{4}$, $\frac{\pi}{2}$\};\\
+	   $\text{Sin[thetaValues]}^2 + \text{Cos[thetaValues]}^2$
 \end{code}
 
-Evaluate this and you will see an output cell containing $\{1,1,1\}$.\footnote{It is worth your while to play around with this code until it ``clicks'' for you} Of course, not all functions are listable, and sometimes using this feature can make your code harder to read and thus debug. That is why \texttt{Map} is a trustworthy alternative. 
+Evaluate this and you will see an output cell containing $\{1,1,1\}$.\footnote{It is worth your while to play around with this code until it ``clicks'' for you} Of course, not all functions are listable, and sometimes using this feature can make your code harder to read and thus debug. That is why \expr{Map} is a trustworthy alternative. 
 
 {\bf Exercises}. 
 \begin{enumerate}
-	   \item Explain why the code in Cell 2 produces only the single output of \texttt{11}
-	   \item Explain why Cell 6 produces \texttt{\{11,x + 10\}} as an output.
+	   \item Explain why the code in Cell 2 produces only the single output of \expr{11}
+	   \item Explain why Cell 6 produces \expr{\{11,x + 10\}} as an output.
 	   \item Explain, using as much detail as you can, what is happening in Cell 7.
 	   \item Think about scalar multiplication and vector addition from Linear Algebra. Do you think these operations could be expressed as listable functions in \emph{Mathematica}? Why or why not?
 \end{enumerate}
