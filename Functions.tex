@@ -9,7 +9,7 @@
 
 Frequently it is useful to take a second function as an argument for a function you have defined. There are no specific use cases for this, but if you are familiar with the technique, you will be able to recognize when it will be helpful.
 
-As an example, let's say that you are preparing a report and you would like all of your graphs to be displayed uniformly. You could manually go throuhg your code and set all of your \texttt{Plot} settings to be the same, or you could define a single abstract function to take certain arguments and plot all of your graphs in the same style.
+As an example, let's say that you are preparing a report and you would like all of your graphs to be displayed uniformly. You could manually go throuhg your code and set all of your \expr{Plot} settings to be the same, or you could define a single abstract function to take certain arguments and plot all of your graphs in the same style.
 
 Let's assume that in this report, we will be plotting a comparions of \emph{Exact Solutions} versus \emph{Approximate Solutions} for a set of differential equations. That means we want our custom plot function to take two arguments
 \begin{enumerate}
@@ -18,21 +18,22 @@ Let's assume that in this report, we will be plotting a comparions of \emph{Exac
 \end{enumerate}
 so we know that the \emph{signature} of our function will look like the following:
 \begin{code}
-	   AwesomePlot[ExactSoln_, ApproxSoln_, LowerBound_, UpperBound_] :=
+	   AwesomePlot[ExactSoln\_, ApproxSoln\_, LowerBound\_, UpperBound\_]:=
 \end{code}
 
-This is because we will need to accept not only the Exact Solution and the Approximate Solution, but also the interval on which those solutions should be plotted. This is part of the normal information we would pass to \texttt{Plot}.\footnote{You may recall that normally \texttt{Plot} is invoked by using an expression, not a function variable, as the first argument (i.e. \texttt{Plot[Sin[2 x], {x,0,1}]}). This is because \texttt{Plot} evaluates its arguments in a non-standard way. TODO: List settings. It is defined in such a way that the first argument is ``Held''. TODO: Section on hold evaluations}. Now we want to display both of these functions on the same graph, preferebly in different colors, so that we may compare them. Thus the body of our function may look like:
+This is because we will need to accept not only the Exact Solution and the Approximate Solution, but also the interval on which those solutions should be plotted. This is part of the normal information we would pass to \expr{Plot}\footnote{You may recall that normally \expr{Plot} is invoked by using an expression, not a function variable, as the first argument (i.e. \expr{Plot[Sin[2 x], \{x,0,1\}]}). This is because \expr{Plot} evaluates its arguments in a non-standard way. TODO: List settings. It is defined in such a way that the first argument is ``Held''. TODO: Section on hold evaluations}. Now we want to display both of these functions on the same graph, preferebly in different colors, so that we may compare them. Thus the body of our function may look like:
 
 \begin{code}
-	   ExactGraph = Plot[ExactSoln[x], {x, LowerBound, UpperBound}, PlotStyle -> Blue];
-
-	   N = Length[ApproxSoln];
-	   StepSize = (UpperBound - LowerBound)/(N - 1);
-	   ApproxPoints = Table[{ApproxSoln[[i]],(i - 1) * StepSize + LowerBound},{i,1,N}];
-	   ApproxGraph = ListPlot[ApproxPoints, PlotStyle -> Red];
+	   ExactGraph = Plot[ExactSoln[x], \{x, LowerBound, UpperBound\}, PlotStyle -> Blue];\\
+	   \\
+	   n = Length[ApproxSoln];\\
+	   StepSize = (UpperBound - LowerBound)/(n - 1);\\
+	   ApproxPoints = Table[\{ApproxSoln[[i]],(i - 1) * StepSize + LowerBound\},\{i,1,n\}];\\
+	   ApproxGraph = ListPlot[ApproxPoints, PlotStyle -> Red];\\
 	   Show[ExactGraph, ApproxGraph]
 \end{code}
 
+\MPlot{Functions}{AwesomePlotSin}{\expr{AwesomePlot[Sin,\{0,1,0,-1,0\},0,2$\pi$]}}
 And we can see that this will form a very handy tool that will make sure all of the plots in your report are very consistent, and it will make your code much, much cleaner.
 
 \section{Recursive Functions}
@@ -40,7 +41,7 @@ And we can see that this will form a very handy tool that will make sure all of 
 
 \textbf{Exercises}.
 \begin{enumerate}
-	   \item Consider the code given for \texttt{AwesomePlot} and explain why \texttt{N - 1} yields a more accurate \texttt{StepSize} than \texttt{N} would.
-	   \item Expand the code for \texttt{AwesomePlot} so that it takes a string to use as the title for the plot
-	   \item Expand the code for \texttt{AwesomePlot} so that it automatically labels plots as ``Figure 1'', ``Figure 2'', etc without explicitly taking an argument. Hint: It should contain a variable that gets incremented every time you call \texttt{AwesomePlot}. 
+	   \item Consider the code given for \expr{AwesomePlot} and explain why \expr{N - 1} yields a more accurate \expr{StepSize} than \expr{N} would.
+	   \item Expand the code for \expr{AwesomePlot} so that it takes a string to use as the title for the plot
+	   \item Expand the code for \expr{AwesomePlot} so that it automatically labels plots as ``Figure 1'', ``Figure 2'', etc without explicitly taking an argument. Hint: It should contain a variable that gets incremented every time you call \expr{AwesomePlot}. 
 \end{enumerate}
