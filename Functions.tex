@@ -1,9 +1,66 @@
 \chapter{Defining Your Own Functions}
 \label{chap:Functions}
 
-\section{Signatures}
+Defining one's own functions is very easy in \emph{Mathematica}. For example, suppose you want a function that converts from Cartesian coordinates to polar coordinates. This is a map of the form $(x,y) \mapsto (r, \theta)$ using the relationships $x = r\cos(\theta)$ and $y = r\sin(\theta)$. We also want an inverse function of the form $(r, \theta) \mapsto (x,y)$ that will convert Polar coordinates to Cartesian. Let's see how this would look in code:
 
-\section{Listable and other options}
+\begin{code}
+	   (* Cell 1 *)\\
+	   CartesianToPolar[\{x\_,y\_\}]:= \{$\sqrt{x^2 + y^2}$, ArcSin$\left[\frac{y}{\sqrt{x^2 + y^2}}\right]$\};\\
+	   PolarToCartestian[\{r\_,$\theta$\_\}]:= \{r Cos[$\theta$], r Sin[$\theta$]\};\\
+\end{code}
+
+We can invoke these functions by using the \expr{[]} operator, as discussed in the section ``\nameref{sec:InvokingFunctions}''. Let's see what happens when we do. 
+
+\begin{code}
+	   (* Cell 2 *)\\
+	   CartesianToPolar[\{1,1\}]\\
+	   $\hookrightarrow$ \{$\sqrt{2}, \frac{\pi}{4}$\}\\
+\end{code}
+
+Since these two functions are one another's inverse, we can compose them and recover our original input:
+
+\begin{code}
+	   (* Cell 3 *)\\
+	   point = \{1,1\};\\
+	   PolarToCartesian[CartesianToPolar[point]];\\
+	   $\hookrightarrow$ \{1, 1\}\\
+\end{code}
+
+
+\section{Using \expr{Block} for Scope}
+
+Notice how, in the above definition of \expr{CartesianToPolar}, we calculate $x^2 + y^2$ in two different places. This isn't the end of the world, but it's a little inelegant, so let's clean it up by calculating it first and using it later as a variable:
+
+\begin{code}
+	   (* Cell 4 *)\\
+	   CartesianToPolar[\{x\_,y\_\}]:= (\\
+	   	r = $\sqrt{x^2 + y^2}$;\\
+	   	\{r, ArcSin$\left[\frac{y}{r}\right]$\}\\
+	   );\\
+\end{code}
+
+That looks much nicer. Cleaning up the code in this way will make your code more readable, and that will make it easier to debug and share with others. However, there is a small side effect: the value stored in \expr{r} will ``leak'' out of your function. To see what this means, let's do an example:
+
+\begin{code}
+	   (* Cell 5 *)\\
+	   CartesianToPolar[{1,1}];\\
+	   r\\
+	   $\hookrightarrow$ $\sqrt{2}$
+\end{code}
+
+Now, why should \expr{r} even exist outside of where it is defined in the \expr{CartesianToPolar} function? That's because \emph{Mathematica} makes all new variables \emph{global} by default. This means that unless you indicate otherwise, variables created anywhere in your program will be accessible from anywhere else. Global variables are not necessarily bad, but if you don't keep an eye on them they can be a total nightmare.
+
+Fortunately, \emph{Mathematica} provides a construct known as a \emph{block} which allows you to set up some local variables and automatically erase them when you're done. You can make a block by calling the \expr{Block} function like this:
+
+\begin{code}
+	   (* Cell 6 *)\\
+	   CartesianToPolar[\{x\_,y\_\}]:= Block[{z},\\
+			 z = $\sqrt{x^2 + y^2}$;\\
+			 \{z, ArcSin$\left[\frac{y}{z}\right]$\}\\
+	   ];\\
+\end{code}
+
+Now if you repeat the experiment from Cell 5, you will see that no new value is stored in the variable \expr{z}. That is because the block automatically set \expr{z} up as a local variable and erased it when the block ended. Keeping variables like this contained in a block will help keep your code clean, because it will keep cells from adversely interacting with one another. 
 
 \section{Accepting Functions as Arguments}
 
@@ -41,6 +98,7 @@ And we can see that this will form a very handy tool that will make sure all of 
 
 \textbf{Exercises}.
 \begin{enumerate}
+	   \item In Cell 1, why were the functions defined with their variables inside a list (\{\})? What would be different if the curly braces were left off? How would this affect composition in Cell 3?
 	   \item Consider the code given for \expr{AwesomePlot} and explain why \expr{N - 1} yields a more accurate \expr{StepSize} than \expr{N} would.
 	   \item Expand the code for \expr{AwesomePlot} so that it takes a string to use as the title for the plot
 	   \item Expand the code for \expr{AwesomePlot} so that it automatically labels plots as ``Figure 1'', ``Figure 2'', etc without explicitly taking an argument. Hint: It should contain a variable that gets incremented every time you call \expr{AwesomePlot}. 
