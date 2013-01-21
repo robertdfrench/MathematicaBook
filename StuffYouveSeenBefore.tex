@@ -74,6 +74,7 @@ When you evaluate Cell 6, you will see that is does something slightly different
 Delayed Evaluation is most frequently used when defining functions (See \nameref{chap:Functions}). For now, this is as far as we need to go with this topic. You might be thinking: ``\emph{Then why did we even bother?!}'' but, the misuse of this operator is the cause of many bugs, and much of the \emph{Mathematica} code you are likely to find on the internet contains a wild \expr{:=} when it shouldn't. Straightening this out now will spare you headaches, and will promote friendship between you and your code.
 
 \section{Invoking Functions}
+\label{sec:InvokingFunctions}
 
 In \emph{Mathematica}, the \emph{invocation operator} is \expr{[]}. This means that, given a function \expr{F}, you can invoke it on an argument \expr{x} by writing \expr{F[x]}. If you do not use the invocation operator, your function will be treated like a variable. Let us look at how this works in a few different scenarios:
 
