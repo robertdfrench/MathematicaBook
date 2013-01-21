@@ -62,7 +62,7 @@ Fortunately, \emph{Mathematica} provides a construct known as a \emph{block} whi
 
 Now if you repeat the experiment from Cell 5, you will see that no new value is stored in the variable \expr{z}. That is because the block automatically set \expr{z} up as a local variable and erased it when the block ended. Keeping variables like this contained in a block will help keep your code clean, because it will keep cells from adversely interacting with one another. 
 
-\section{Accepting Functions as Arguments}
+\section{A ccepting Functions as Arguments}
 
 Frequently it is useful to take a second function as an argument for a function you have defined. There are no specific use cases for this, but if you are familiar with the technique, you will be able to recognize when it will be helpful.
 
@@ -99,15 +99,69 @@ It is sometimes handy to define a function that turns around and calls itself.
 
 \subsection{Calculating the Fibonacci Sequence}
 
-Now in Number Theory, this is pretty interesting. But in a section on programming with recursive functions, it's really a pretty boring example. Let's do something cool
+The Fibonacci Sequence is a famous integer sequence that appears unexpectedly in nature and aesthetics. For many, it is the first clue that the world we live in is inherently mathematical. The $n$th term in this sequence, labelled $F_n$, can be calculated as follows:
+
+\begin{align}
+	   F_0 &= 0 \\
+	   F_1 &= 1 \\
+	   F_n &= F_{n - 1} + F_{n - 2}
+\end{align}
+
+Now, how do we build this in \emph{Mathematica}? Notice that in Equation 3, $F_n$ is defined in terms of previous members of the sequence. Let's rephrase these equations in function notation and see if it becomes a little clearer:
+
+\begin{align}
+	   F(0) &= 0 \\
+	   F(1) &= 1 \\
+	   F(n) &= F(n - 1) + F(n - 2)
+\end{align}
+
+So now we can see that the function $F(n)$ \emph{depends on itself}. That is what the notion of a recursive function is all about! So, let's try to build this in \emph{Mathematica}:
+
+\begin{code}
+	   (* Cell 1 *) \\
+	   F[n\_] := F[n - 1] + F[n - 2];
+\end{code}
+
+We can hit ``Shift+Enter'' to evaluate this cell, and we get no complaints from \emph{Mathematica}, so everything must be fine, right? Let's try to calculate \expr{F[2]} and see if we get $1$:
+
+\begin{code}
+	   (* Cell 2 *)\\
+	   F[2]\\
+	   $\hookrightarrow$ \emph{Recursion depth exceeded}
+\end{code}
+
+So\ldots that's not cool\ldots But what does that error even mean? It means that our function \expr{F} called itself over and over and over again until \emph{Mathematica} said ``Enough! This thing looks as though it will never stop, so I'm going to stop it for you!''. But why did it not stop at \expr{F[0] = 0} like Equation 4? Well, we didn't tell it when to stop, so when it got to \expr{n = 0}, it called \expr{F[0]} which called \expr{F[-1]} and \expr{F[-2]} and kept right on rolling down into the negative numbers.
+
+That being said, how do we make a recursive function stop at a certain point? As with most things in \emph{Mathematica}, it's pretty easy -- we just tell it when, like this:
+
+\begin{code}
+	   (* Cell 1 *)\\
+	   F[0] = 0;\\
+	   F[1] = 1;\\
+	   F[n\_] := F[n - 1] + F[n - 2];
+\end{code}
+
+What happens here is that the function \expr{F} actually has different rules that it can execute depending on what the input is. This is the \emph{Mathematica} equivalent of a piecewise-defined function. It is as though we had written:
+
+\begin{align}
+	   F(n) = \left\{ \begin{array}{rcl}
+			 0 & \mbox{for} & n = 0 \\
+			 1 & \mbox{for} & n = 1 \\
+			 F(n-1) + F(n-2) & \mbox{for} & n \geq 2
+	   \end{array}\right.
+\end{align}
+
+When a function has many different rules with different patterns, \emph{Mathematica} will try to match them \emph{in the order they are given}\footnote.
 
 \subsection{Building your own Derivative operator}
 
 
 \textbf{Exercises}.
 \begin{enumerate}
-	   \item In Cell 1, why were the functions defined with their variables inside a list (\{\})? What would be different if the curly braces were left off? How would this affect composition in Cell 3?
-	   \item Consider the code given for \expr{AwesomePlot} and explain why \expr{N - 1} yields a more accurate \expr{StepSize} than \expr{N} would.
+ 	   \item In Cell 1, why were the functions defined with their variables inside a list (\{\})? What would be different if the curly braces were left off? How would this affect composition in Cell 3?
+ 	   \item Consider the code given for \expr{AwesomePlot} and explain why \expr{n - 1} yields a more accurate \expr{StepSize} than \expr{n} would.
 	   \item Expand the code for \expr{AwesomePlot} so that it takes a string to use as the title for the plot
-	   \item Expand the code for \expr{AwesomePlot} so that it automatically labels plots as ``Figure 1'', ``Figure 2'', etc without explicitly taking an argument. Hint: It should contain a variable that gets incremented every time you call \expr{AwesomePlot}. 
+ 	   \item Expand the code for \expr{AwesomePlot} so that it automatically labels plots as ``Figure 1'', ``Figure 2'', etc without explicitly taking an argument. Hint: It should contain a variable that gets incremented every time you call \expr{AwesomePlot}. 
+	   \item Build a recursive function that can generate the \href{http://en.wikipedia.org/wiki/Fibonacci_word}{Fibonacci Word} of length \expr{n}.
+	   \item Build a recursive function that can test the \href{http://en.wikipedia.org/wiki/Collatz_conjecture}{Collatz Conjecture} for a given Natural number \expr{n}.
 \end{enumerate}
