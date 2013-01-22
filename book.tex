@@ -4,7 +4,7 @@
 \usepackage{alltt}
 \usepackage[colorlinks]{hyperref}
 
-\input{CodeHighlighting}
+\input{custom_environments}
 
 \makeindex
 
@@ -14,22 +14,20 @@
 \author[Jator]{Samuel N. Jator}
 \author[French]{Robert D. French}
 %\maketitle
-\input{CustomCover}
+\input{Prependices/CustomCover}
 \tableofcontents
-\input{preface}
-\input{Preliminaries}
+\input{Prependices/Preface}
+\input{Prependices/Preliminaries}
 \mainmatter
-\input{StuffYouveSeenBefore}
-\input{KernelStateScope}
-\input{Functions}
-\input{ListsMap}
-\input{Plotting}
-\input{SymbolsExpressionsReplacement}
+\input{Chapters/StuffYouveSeenBefore}
+\input{Chapters/KernelStateScope}
+\input{Chapters/Functions}
+\input{Chapters/ListsMap}
+\input{Chapters/Plotting}
+\input{Chapters/SymbolsExpressionsReplacement}
 \appendix
-\input{Help}
-\input{GitHub}
-\input{EulerDerivation}
-\input{DerivingImprovedEuler}
-\input{ApplicationOfMethods}
+\input{Appendices/Help}
+\input{Appendices/GitHub}
+\input{Appendices/Projects}
 \backmatter
 \end{document}
