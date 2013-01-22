@@ -62,7 +62,7 @@ Fortunately, \emph{Mathematica} provides a construct known as a \emph{block} whi
 
 Now if you repeat the experiment from Cell 5, you will see that no new value is stored in the variable \expr{z}. That is because the block automatically set \expr{z} up as a local variable and erased it when the block ended. Keeping variables like this contained in a block will help keep your code clean, because it will keep cells from adversely interacting with one another. 
 
-\section{A ccepting Functions as Arguments}
+\section{Accepting Functions as Arguments}
 
 Frequently it is useful to take a second function as an argument for a function you have defined. There are no specific use cases for this, but if you are familiar with the technique, you will be able to recognize when it will be helpful.
 
@@ -95,13 +95,13 @@ And we can see that this will form a very handy tool that will make sure all of 
 
 \section{Recursive Functions}
 
-It is sometimes handy to define a function that turns around and calls itself.
+It is sometimes handy to define a function that turns around and calls itself. This can come up in Math when building recurrence relations, but it can also be a stylistic technique to help keep your code clean and readable. Clever use of recursive functions can make code more concise, and thus more transparent and demonstrable. As stated many other times in this book, code clarity is vital to collaboration.
 
-\subsection{Calculating the Fibonacci Sequence}
+\subsection{Calculating the Fibonacci Sequence} 
 
 The Fibonacci Sequence is a famous integer sequence that appears unexpectedly in nature and aesthetics. For many, it is the first clue that the world we live in is inherently mathematical. The $n$th term in this sequence, labelled $F_n$, can be calculated as follows:
 
-\begin{align}
+\begin{align} 
 	   F_0 &= 0 \\
 	   F_1 &= 1 \\
 	   F_n &= F_{n - 1} + F_{n - 2}
@@ -109,7 +109,7 @@ The Fibonacci Sequence is a famous integer sequence that appears unexpectedly in
 
 Now, how do we build this in \emph{Mathematica}? Notice that in Equation 3, $F_n$ is defined in terms of previous members of the sequence. Let's rephrase these equations in function notation and see if it becomes a little clearer:
 
-\begin{align}
+\begin{align} 
 	   F(0) &= 0 \\
 	   F(1) &= 1 \\
 	   F(n) &= F(n - 1) + F(n - 2)
@@ -151,17 +151,19 @@ What happens here is that the function \expr{F} actually has different rules tha
 	   \end{array}\right.
 \end{align}
 
-When a function has many different rules with different patterns, \emph{Mathematica} will try to match them \emph{in the order they are given}\footnote.
+When a function has many different rules with different patterns, \emph{Mathematica} will try to match them \emph{in the order they are given}\footnote{Try quitting the kernel and moving line 3 to the top in Cell 1. Re-evaluate the cell and see if you can make a conjecture about why the sequence does not finish in this case.}. The first two rules are expressed without \expr{\_} signs in the arguments. This indicates that they should match exactly the value given. This means the first rule is matched \emph{only} when \expr{n = 0} and it is skipped otherwise.
+
+There are many other types of wilcards, and we will explore these in the next section. It is recommended that you do exercises 5 and 6 before proceeding.
 
 \subsection{Building your own Derivative operator}
 
 
 \textbf{Exercises}.
 \begin{enumerate}
- 	   \item In Cell 1, why were the functions defined with their variables inside a list (\{\})? What would be different if the curly braces were left off? How would this affect composition in Cell 3?
- 	   \item Consider the code given for \expr{AwesomePlot} and explain why \expr{n - 1} yields a more accurate \expr{StepSize} than \expr{n} would.
+ 	   \item In Cell 1, why were the functions defined with their variables inside a list (\{\})? What would be different if the curly braces were le ft off? How would this affect composition in Cell 3?
+ 	   \item Consider the code given for \expr{AwesomePlot} and explain why \expr{n - 1} yields a more accurate \expr{StepSize} than \expr{n} would. 
 	   \item Expand the code for \expr{AwesomePlot} so that it takes a string to use as the title for the plot
- 	   \item Expand the code for \expr{AwesomePlot} so that it automatically labels plots as ``Figure 1'', ``Figure 2'', etc without explicitly taking an argument. Hint: It should contain a variable that gets incremented every time you call \expr{AwesomePlot}. 
-	   \item Build a recursive function that can generate the \href{http://en.wikipedia.org/wiki/Fibonacci_word}{Fibonacci Word} of length \expr{n}.
-	   \item Build a recursive function that can test the \href{http://en.wikipedia.org/wiki/Collatz_conjecture}{Collatz Conjecture} for a given Natural number \expr{n}.
+ 	   \item Expand the code for \expr{AwesomePlot} so that it automatically labels plots as ``Figure 1'', ``Figure 2'', etc without explicitly takin g an argument. Hint: It should contain a variable that gets incremented every time you call \expr{AwesomePlot}. 
+	   \item Build a recursive function that can generate the \href{http://en.wikipedia.org/wiki/Fibonacci_word}{Fibonacci Word} of length \expr{n}. 
+	   \item Build a recursive function that can test the \href{http://en.wikipedia.org/wiki/Collatz_conjecture}{Collatz Conjecture} for a given Natural number \expr{n}. 
 \end{enumerate}
