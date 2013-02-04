@@ -4,7 +4,6 @@
 Defining one's own functions is very easy in \emph{Mathematica}. For example, suppose you want a function that converts from Cartesian coordinates to polar coordinates. This is a map of the form $(x,y) \mapsto (r, \theta)$ using the relationships $x = r\cos(\theta)$ and $y = r\sin(\theta)$. We also want an inverse function of the form $(r, \theta) \mapsto (x,y)$ that will convert Polar coordinates to Cartesian. Let's see how this would look in code:
 
 \begin{code}
-	   (* Cell 1 *)\\
 	   CartesianToPolar[\{x\_,y\_\}]:= \{$\sqrt{x^2 + y^2}$, ArcSin$\left[\frac{y}{\sqrt{x^2 + y^2}}\right]$\};\\
 	   PolarToCartestian[\{r\_,$\theta$\_\}]:= \{r Cos[$\theta$], r Sin[$\theta$]\};\\
 \end{code}
@@ -12,18 +11,16 @@ Defining one's own functions is very easy in \emph{Mathematica}. For example, su
 We can invoke these functions by using the \expr{[]} operator, as discussed in the section ``\nameref{sec:InvokingFunctions}''. Let's see what happens when we do. 
 
 \begin{code}
-	   (* Cell 2 *)\\
 	   CartesianToPolar[\{1,1\}]\\
-	   $\hookrightarrow$ \{$\sqrt{2}, \frac{\pi}{4}$\}\\
+	   \MReturn{\{$\sqrt{2}, \frac{\pi}{4}$\}\\}
 \end{code}
 
 Since these two functions are one another's inverse, we can compose them and recover our original input:
 
 \begin{code}
-	   (* Cell 3 *)\\
 	   point = \{1,1\};\\
 	   PolarToCartesian[CartesianToPolar[point]];\\
-	   $\hookrightarrow$ \{1, 1\}\\
+	   \MReturn{\{1, 1\}\\}
 \end{code}
 
 
@@ -32,7 +29,6 @@ Since these two functions are one another's inverse, we can compose them and rec
 Notice how, in the above definition of \expr{CartesianToPolar}, we calculate $x^2 + y^2$ in two different places. This isn't the end of the world, but it's a little inelegant, so let's clean it up by calculating it first and using it later as a variable:
 
 \begin{code}
-	   (* Cell 4 *)\\
 	   CartesianToPolar[\{x\_,y\_\}]:= (\\
 	   	r = $\sqrt{x^2 + y^2}$;\\
 	   	\{r, ArcSin$\left[\frac{y}{r}\right]$\}\\
@@ -42,10 +38,9 @@ Notice how, in the above definition of \expr{CartesianToPolar}, we calculate $x^
 That looks much nicer. Cleaning up the code in this way will make your code more readable, and that will make it easier to debug and share with others. However, there is a small side effect: the value stored in \expr{r} will ``leak'' out of your function. To see what this means, let's do an example:
 
 \begin{code}
-	   (* Cell 5 *)\\
 	   CartesianToPolar[{1,1}];\\
 	   r\\
-	   $\hookrightarrow$ $\sqrt{2}$
+	   \MReturn{$\sqrt{2}$}
 \end{code}
 
 Now, why should \expr{r} even exist outside of where it is defined in the \expr{CartesianToPolar} function? That's because \emph{Mathematica} makes all new variables \emph{global} by default. This means that unless you indicate otherwise, variables created anywhere in your program will be accessible from anywhere else. Global variables are not necessarily bad, but if you don't keep an eye on them they can be a total nightmare.
@@ -53,7 +48,6 @@ Now, why should \expr{r} even exist outside of where it is defined in the \expr{
 Fortunately, \emph{Mathematica} provides a construct known as a \emph{block} which allows you to set up some local variables and automatically erase them when you're done. You can make a block by calling the \expr{Block} function like this:
 
 \begin{code}
-	   (* Cell 6 *)\\
 	   CartesianToPolar[\{x\_,y\_\}]:= Block[{z},\\
 			 z = $\sqrt{x^2 + y^2}$;\\
 			 \{z, ArcSin$\left[\frac{y}{z}\right]$\}\\
@@ -118,16 +112,14 @@ Now, how do we build this in \emph{Mathematica}? Notice that in Equation 3, $F_n
 So now we can see that the function $F(n)$ \emph{depends on itself}. That is what the notion of a recursive function is all about! So, let's try to build this in \emph{Mathematica}:
 
 \begin{code}
-	   (* Cell 1 *) \\
 	   F[n\_] := F[n - 1] + F[n - 2];
 \end{code}
 
 We can hit ``Shift+Enter'' to evaluate this cell, and we get no complaints from \emph{Mathematica}, so everything must be fine, right? Let's try to calculate \expr{F[2]} and see if we get $1$:
 
 \begin{code}
-	   (* Cell 2 *)\\
 	   F[2]\\
-	   $\hookrightarrow$ \emph{Recursion depth exceeded}
+	   \MReturn{\emph{Recursion depth exceeded}}
 \end{code}
 
 So\ldots that's not cool\ldots But what does that error even mean? It means that our function \expr{F} called itself over and over and over again until \emph{Mathematica} said ``Enough! This thing looks as though it will never stop, so I'm going to stop it for you!''. But why did it not stop at \expr{F[0] = 0} like Equation 4? Well, we didn't tell it when to stop, so when it got to \expr{n = 0}, it called \expr{F[0]} which called \expr{F[-1]} and \expr{F[-2]} and kept right on rolling down into the negative numbers.
@@ -135,7 +127,6 @@ So\ldots that's not cool\ldots But what does that error even mean? It means that
 That being said, how do we make a recursive function stop at a certain point? As with most things in \emph{Mathematica}, it's pretty easy -- we just tell it when, like this:
 
 \begin{code}
-	   (* Cell 1 *)\\
 	   F[0] = 0;\\
 	   F[1] = 1;\\
 	   F[n\_] := F[n - 1] + F[n - 2];
@@ -156,6 +147,7 @@ When a function has many different rules with different patterns, \emph{Mathemat
 There are many other types of wilcards, and we will explore these in the next section. It is recommended that you do exercises 5 and 6 before proceeding.
 
 \subsection{Building your own Derivative operator}
+
 
 
 \textbf{Exercises}.

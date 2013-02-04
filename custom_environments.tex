@@ -1,6 +1,15 @@
+\newcounter{CellID}[section]
+\renewcommand{\theCellID}{\thesection.\arabic{CellID}}
+
 \newenvironment{code}%
-{\begin{quote}\ttfamily}%
+{\begin{quote}\refstepcounter{CellID}\ttfamily(* Cell \theCellID{} *)\\\noindent}%
 {\rmfamily\end{quote}}
+
+\newcommand{\cellref}[1]{Cell \ref{code:#1}}
+
+\newcommand{\chapref}[1]{Chapter \ref{#1}, ``\nameref{#1}''}
+
+\newcommand{\MReturn}[1]{$\hookrightarrow$ #1}
 
 \newcommand{\expr}[1]{\ttfamily{#1}\rmfamily}
 

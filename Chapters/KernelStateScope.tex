@@ -1,13 +1,6 @@
 \chapter[Kernel, State, Scope]{The Kernel, Variable State, and Scope}
 \label{chap:Kernel}
 
-Before beginning this chapter, it is assumed that you know a few things about \emph{Mathematica} programming already. Specifically, you will need to know how to
-\begin{enumerate}
-	   \item assign values to variables
-	   \item evaluate \emph{Mathematica} cells
-\end{enumerate}
-and if you don't, that's quite alright. Just see the section ``\emph{\nameref{chap:Prelim}}'' on page \pageref{chap:Prelim}, and even if you have done a bit of programming before, we will walk you through some basic \emph{Mathematica}.
-
 \section{What is the Kernel?}
 
 In \emph{Mathematica}, all of your coding is done in a \emph{notebook}, and all of the output of your code is displayed there as well. However, the calculations themselves are done in \emph{an entirely separate program}\footnote{This is an example of a Service in a Service Oriented Architecture, and if you are interested in software engineering, you should check this out.}, and this program is called a \emph{kernel}. There are many reasons for doing these calculations in a separate program from your notebooks:
@@ -23,72 +16,71 @@ So we see that this separation of kernel and notebook is very powerful. But what
 
 Most of the time, these are just technical points that can be ignored, but understanding how the kernel works will make all the difference in the world when you begin to debug your research program.
 
-\subsection{Quitting the Kernel}. This is kindof like an emergency reset for your program. Quitting the Kernel will basically erase the values for all the variables in your notebook (because they are stored in this separate program which you are about to quit). For example, open a new notebook and evaluate the following code:
+\subsection{Quitting the Kernel} This is kindof like an emergency reset for your program. Quitting the Kernel will basically erase the values for all the variables in your notebook (because they are stored in this separate program which you are about to quit). For example, open a new notebook and evaluate the following code:
 
 \begin{code}
-	   (* Cell 1 *)\\
 	   NumEggs = 5
 \end{code}
 
 Now, in a new cell, evaluate this code:
 
 \begin{code}
-	(* Cell 2 *)\\
+	\label{code:PrintProgrammersDozen}
 	Print[``There Are '' <> ToString[NumEggs] <> `` eggs in a Programmer's Dozen''];
 \end{code}
 
-And \emph{Mathematica} will display the text ``There are 5 eggs in a Programmer's Dozen''\footnote{As opposed to 13 in a ''Baker's Dozen``}. Now go up to the menu and select ''Kernel`` $\rightarrow$ ''Quit Kernel`` $\rightarrow$ ''Local``. This will cause the kernel you are using to go away, and your variable state will go away with it. Now re-evaluate Cell 2 and see what you get. It will tell you that there are ''NumEggs`` in a Programmer's Dozen. Wait\ldots What?
+And \emph{Mathematica} will display the text ``There are 5 eggs in a Programmer's Dozen''\footnote{As opposed to 13 in a ``Baker's Dozen''.}. Now go up to the menu and select ``Kernel'' $\rightarrow$ ``Quit Kernel'' $\rightarrow$ ``Local''. This will cause the kernel you are using to go away, and your variable state will go away with it. Now re-evaluate \cellref{PrintProgrammersDozen} and see what you get. It will tell you that there are ``NumEggs'' in a Programmer's Dozen. Wait\ldots What?
 
-What's happening here is that when \emph{Mathematica} tries to find a value for the variable \expr{NumEggs}, it notices that one does not exist, so in order to keep your code from exploding\footnote{which is what would happen in other dynamic languages like Ruby or PHP} a value is fabricated for you. The value given is a \emph{symbol object}, which is just a placeholder, kinda like a string, which corresponds to the name ``NumEggs''.
+What's happening here is that when \emph{Mathematica} tries to find a value for the variable \expr{NumEggs}, it notices that one does not exist, so in order to keep your code from exploding\footnote{Which is what would happen in other dynamic languages like Ruby or PHP.} a value is fabricated for you. The value given is a \emph{symbol object}, which is just a placeholder, kinda like a string, which corresponds to the name ``NumEggs''.
 
 Symbols will be discussed in more detail in Chapter \ref{chap:Symbols}, but for now they aren't important. The thing to focus on here is that the variable \expr{NumEggs} no longer contains the value \expr{5} because you quit the kernel in which it was stored.
 
-\subsection{Debugging with a Secondary Notebook}. When dealing with large \emph{Mathematica} projects, it can sometimes be handy to play around with a particular line of code, or analyze the output from one section before going on to the next cell. You could do this all in one notebook, but that could get sloppy, and you run the risk of messing up some code that is already working\footnote{Although, you are protecting yourself from code loss by using version control, right? If not, check out Appendix \ref{chap:GitHub}, ``\nameref{chap:GitHub}''}.
+\subsection{Debugging with a Secondary Notebook} When dealing with large \emph{Mathematica} projects, it can sometimes be handy to play around with a particular line of code, or analyze the output from one section before going on to the next cell. You could do this all in one notebook, but that could get sloppy, and you run the risk of messing up some code that is already working\footnote{Although, you are protecting yourself from code loss by using version control, right? If not, check out Appendix \ref{chap:GitHub}, ``\nameref{chap:GitHub}''.}.
 
 For example, let's suppose you have the following block of code that does not appear to be working correctly:
 
 \begin{code}
-	   (* Cell 3 *)\\
 	   EvaluateDerivativeAtAPoint[f\_,x\_] := Block[\{fPrime\}\footnote{Using \expr{Block} is just a way to tell \emph{Mathematica} that \expr{fPrime} should be treated as a \emph{local} variable, which means its value will not be seen outside of the \expr{Block} statement. More on this in Section \ref{sec:Scope}, ``\nameref{sec:Scope}''}, \\
 	   	fPrime = f';\\
 		fPrime[x]\\
-	   ];\\
-		\\
-	   (* Cell 4 *)\\
+	   ];
+\end{code}
+\begin{code}
 	   EvaluateDerivativeAtAPoint[Sin, $\pi$]\\
-	   $\rightarrow$ -1\\
-	   \\
-	   (* Cell 5 *)\\
+	   \MReturn{-1}
+\end{code}
+\begin{code}
+	   \label{code:MisuseExpressionAsArgument}
 	   EvaluateDerivativeAtAPoint[$x^2 + x$, $\pi$]\\
-	   $\rightarrow$ ($x + x^2$)'[$\pi$]
+	   \MReturn{($x + x^2$)'[$\pi$]}
 \end{code}
 
 Why does it give the right answer for $\sin$ but some weird expression for $x^2 + x$? Well, let's open a new notebook and play around with a couple of things. You can open a new notebook by going to ``File''$\rightarrow$``New'' or pressing ``Ctrl+N''. In the new notebook, type the following code:
 
 \begin{code}
-	   (* Cell 1 -- Second Notebook *)\\
+	   (* Second Notebook *)\\
 	   f = $x^2 + x$;\\
 	   fPrime = f';\\
 	   fPrime[$\pi$]\\
-	   $\rightarrow$ ($x + x^2$)'[$\pi$]
+	   \MReturn{($x + x^2$)'[$\pi$]}
 \end{code}
 
 The idea here was to repeat the basic logic of our \expr{EvaluateDerivativeAtAPoint} function to see if we could reproduce the problem, and indeed we have. It looks like maybe the third line is not invoking the function? Or maybe the second line is not taking the derivative for some reason? One way to settle that is to remove the third line and then see what happens:
 
 \begin{code}
-	   (* Cell 1 -- Second Notebook *)\\
+	   (* Second Notebook *)\\
 	   f = $x^2 + x$;\\
 	   fPrime = f'\\
-	   $\rightarrow$ ($x + x^2$)'
+	   \MReturn{($x + x^2$)'}
 \end{code}
 
 Okay, so that looks a little funny, but we remember that it gave the right answer for $\sin$, right? So let's duplicate this cell\footnote{you can click on the bar on the right side of the cell to select it, hit ``Ctrl-C'' to copy, and then ``Ctrl-V'' to duplicate the contents into a new cell.} and try again with \expr{Sin} just to make sure:
 
 \begin{code}
-	   (* Cell 2 -- Second Notebook *)\\
+	   (* Second Notebook *)\\
 	   f = Sin;\\
 	   fPrime = f'\\
-	   $\rightarrow$ Cos[\#1] \&
+	   \MReturn{Cos[\#1] \&}
 \end{code}
 
 My goodness, what is happening here? It is not obvious from looking at it, but that is shorthand \emph{Mathematica} syntax for a new function. It is equivalent to writing \expr{Function[x,Cos[x]]}, which simply means \emph{``Here is a new function that takes x as an argument and gives Cos[x] as its value''}. This will be covered in more detail in Chapter \ref{chap:Functions}, ``\nameref{chap:Functions}'', but for now we don't have to worry about the specifics. 
@@ -96,27 +88,27 @@ My goodness, what is happening here? It is not obvious from looking at it, but t
 We can make a guess that maybe, for some reason, the \expr{'} operator won't work on plain expressions like $x^2 + x$, but it will work on things that \emph{Mathematica} recognizes as full-fledged functions like \expr{Sin} and \expr{Cos}. So, how do we make \emph{Mathematica} recognize $x^2 + x$ as a function? Let's try using \expr{Function} to define our expression as a proper function of the variable \expr{x}:
 
 \begin{code}
-	   (* Cell 3 -- Second Notebook *)\\
+	   (* Second Notebook *)\\
 	   f = Function[x, $x^2 + x$];\\
 	   fPrime = f'\\
-	   $\rightarrow$ Function[x, 1 + 2x]
+	   \MReturn{Function[x, 1 + 2x]}
 \end{code}
 
 And we can see now that we have \expr{Function[x, 1 + 2x]} as our result, which means \emph{``Here is a new function that takes x as an argument and gives 1 + 2x as its value''}, and indeed this is what we want for the derivative of $x^2 + x$. Now let us re-introduce the line of code we removed earlier:
 
 \begin{code}
-	   (* Cell 3 -- Second Notebook *)\\
+	   (* Second Notebook *)\\
 	   f = Function[x, $x^2 + x$];\\
 	   fPrime = f';\\
 	   f'[$\pi$]\\
-	   $\rightarrow$ $1 + 2\pi$
+	   \MReturn{$1 + 2\pi$}
 \end{code}
 
-So now we understand the nature of the bug: it wasn't that our \expr{EvaluateDerivativeAtAPoint} function was wrong, rather it was that we were invoking it with the wrong \emph{type} of argument. We gave it the \emph{expression} $x^2 + x$ when in fact we should have given it the \emph{function} \expr{Function[x, $x^2 + x$]}. Now we can go back to our first notebook and correct the code in Cell 5:
+So now we understand the nature of the bug: it wasn't that our \expr{EvaluateDerivativeAtAPoint} function was wrong, rather it was that we were invoking it with the wrong \emph{type} of argument. We gave it the \emph{expression} $x^2 + x$ when in fact we should have given it the \emph{function} \expr{Function[x, $x^2 + x$]}. Now we can go back to our first notebook and correct the code in \cellref{MisuseExpressionAsArgument}:
 
 \begin{code}
 	   EvaluateDerivativeAtAPoint[Function[x, $x^2 + x$], $\pi$]\\
-	   $\rightarrow$ $1 + 2\pi$
+	   \MReturn{$1 + 2\pi$}
 \end{code}
 
 and now we are in good shape. Using this debugging strategy, we were able to fool around with fixing the bug in one notebook without messing up the code in our main notebook. This is an excellent habit, and it will save you mountains of trouble.
@@ -127,51 +119,45 @@ and now we are in good shape. Using this debugging strategy, we were able to foo
 Whenever you use a new variable in  \emph{Mathematica}, the kernel makes a new entry for that variable in the global symbol table. This can be a hassle when debugging, because you may want to re-evaluate a cell over and over while you change it, and sometimes values from previous calculations can sneak in and mess up your code. For example, let's say that you are building a list of intermediate expressions for some larger calculation. Maybe you have to calculate the value of a function and its derivative at certain points and store them in a list\footnote{This may seem like a silly example, but it is one of the first steps in deriving BDF, Numerov, or Adams-style ODE solvers}:
 
 \begin{code}
-	   (* Cell 1 *)\\
 	   PointsForFunction = \{0, 1, 2\};\\
 	   PointsForDerivative = \{3, 4\};\\
 	   ListOfValues = \{\};\\
 \end{code}
 	   
 \begin{code}
-	   (* Cell 2 *)\\
 	   f = Function[x, $x^2 + x$];\\
 	   AppendTo[ListOfValues, Map[f, PointsForFunction]]\\
-	   $\rightarrow$ \{0, 2, 6\}\\
+	   \MReturn{\{0, 2, 6\}\\}
 \end{code}
 	   
 \begin{code}
-	   (* Cell 3 *)\\
 	   fPrime = Function[x, $2x$];\\
 	   AppendTo[ListOfValues, Map[fPrime, PointsForDerivative]]\\
-	   $\rightarrow$ \{0, 2, 6, 6, 8\}\\
+	   \MReturn{\{0, 2, 6, 6, 8\}\\}
 \end{code}
 
 Which looks all well and good, except we put the wrong derivative for \expr{fPrime}! Let's fix that and re-evaluate Cell 3:
 
 \begin{code}
-	   (* Cell 3 *)\\
 	   fPrime = Function[x, $2x + 1$];\\
 	   AppendTo[ListOfValues, Map[fPrime, PointsForDerivative]]\\
-	   $\rightarrow$ \{0, 2, 6, 6, 8, 7, 9\}\\
+	   \MReturn{\{0, 2, 6, 6, 8, 7, 9\}\\}
 \end{code}
 
 Hmmm\ldots that can't possibly be right. It seems like we have too many values here, don't you think? Let's re-evaluate Cell 3 again and see if it does the same thing:
 
 \begin{code}
-	   (* Cell 3 *)\\
 	   fPrime = Function[x, $2x + 1$];\\
 	   AppendTo[ListOfValues, Map[fPrime, PointsForDerivative]]\\
-	   $\rightarrow$ \{0, 2, 6, 6, 8, 7, 9, 7, 9\}\\
+	   \MReturn{\{0, 2, 6, 6, 8, 7, 9, 7, 9\}\\}
 \end{code}
 
 Okay, it looks like our list is growing by 2 units every time we run this cell. What could possibly be going on? Let's re-evaluate Cell 2 and see what we get:
 
 \begin{code}
-	   (* Cell 2 *)\\
 	   f = Function[x, $x^2 + x$];\\
 	   AppendTo[ListOfValues, Map[f, PointsForFunction]]\\
-	   $\rightarrow$ \{0, 2, 6, 6, 8, 7, 9, 7, 9, 0, 2, 6\}\\
+	   \MReturn{\{0, 2, 6, 6, 8, 7, 9, 7, 9, 0, 2, 6\}\\}
 \end{code}
 
 Probably, clever reader, you have figured out the bug by now -- Every time we re-evaluate Cells 2 and 3, new values are added to our \expr{ListOfValues}, but we never bothered to reset it, so it just kept growing! 
@@ -179,7 +165,6 @@ Probably, clever reader, you have figured out the bug by now -- Every time we re
 Now, how do we resolve such a puzzle? The answer is that we can use the \expr{Block} function to keep our variables contained to just one region of the code. That will allow us to re-run cells over and over while we make adjustments, and \emph{Mathematica} will automatically reset the variables for us each time. Check this out:
 
 \begin{code}
-	   (* Cell 4 *)\\
 	   PointsForFunction = \{0, 1, 2\};\\
 	   PointsForDerivative = \{3, 4\};\\
 	   ListOfValues = Block[\{temporaryList\},\\
@@ -190,7 +175,7 @@ Now, how do we resolve such a puzzle? The answer is that we can use the \expr{Bl
 	   	AppendTo[temporaryList, Map[fPrime, PointsForDerivative]];\\
 	   	temporaryList\\
 	   ]\\
-	   $\rightarrow$ \{0, 2, 4, 7, 9\}
+	   \MReturn{\{0, 2, 4, 7, 9\}}
 \end{code}
 
 You can re-run that as many times as you like, and you'll never have to worry about values from old calculations sneaking into your list.

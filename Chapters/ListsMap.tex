@@ -1,4 +1,4 @@
-\chapter{Lists, \texttt{Map}, and \texttt{Table}}
+\chapter{Lists, \expr{Map}, and \expr{Table}}
 \label{chap:ListsMap}
 This chapter introduces what computer scientists refer to as \emph{functional programming}. To understand some of the impact of this, we begin by discussing the fundamental data structure of functional programming, the List.
 
@@ -10,41 +10,99 @@ Lists in \emph{Mathematica} can be constructed very simply by the following stat
 \end{code}
 or equivalently
 \begin{code}
-	   A = {};
+	   A = \{\};
 \end{code}
-however, the former style should be preferred as it is more explicit\footnote{Good programmers always aim for their code to be \emph{clear} and \emph{explicit}. This makes it easier for others to read their code and understand its meaning, and that is good for friendship}. Lists can be grown by \emph{appending} to elements to them. For example, in order to create the list $1,2,3,4$, we could do the following:
+however, the former style should be preferred as it is more explicit\footnote{Good programmers always aim for their code to be \emph{clear} and \emph{explicit}. This makes it easier for others to read their code and understand its meaning, and that is good for friendship.}. Lists can be grown by \emph{appending} elements to them. For example, in order to create the list $1,2,3,4$, we could do the following:
 \begin{code}
-	   AppendTo[A, 1];
-	   AppendTo[A, 2];
-	   AppendTo[A, 3];
+	   AppendTo[A, 1];\\
+	   AppendTo[A, 2];\\
+	   AppendTo[A, 3];\\
 	   AppendTo[A, 4];
 \end{code}
 
 Of course, we could also define this list explicitly as follows:
 \begin{code}
-	   A = {1,2,3,4};
+	   A = \{1,2,3,4\};
 \end{code}
-and this is of course much more concise. Generally, if a list can be defined without doing any calculations, i.e. if it is a constant, you will define it all at once as we have done here. However, if the list must be built up programmatically, it is necessary to use the \texttt{AppendTo} function as described above.
+and this is of course much more concise. Generally, if a list can be defined without doing any calculations, i.e. if it is a constant, you will define it all at once as we have done here. However, if the list must be built up programmatically, it is necessary to use the \expr{AppendTo} function as described above.
 
-We can also access list elements directly by using the \texttt{[[]]} operator. For example, to get the first element of \texttt{A}, we do as follows:
+We can also access list elements directly by using the \expr{[[]]} operator. For example, to get the first element of \expr{A}, we do as follows:
 \begin{code}
 	   A[[1]]
 \end{code}
-Note that unlike most programming languages, \emph{Mathematica} begins indexing lists with \texttt{1} rather than \texttt{0}. This is good, because it is in keeping with most mathematical notation for dealing with vectors and matrices. We can also assign values explicitly to a list by using the \texttt{[[]]=} operator like so:
+Note that unlike most programming languages, \emph{Mathematica} begins indexing lists with \expr{1} rather than \expr{0}. This is good, because it is in keeping with most mathematical notation for dealing with vectors and matrices. We can also assign values explicitly to a list by using the \expr{[[]]=} operator like so:
 \begin{code}
 	   A[[2]] = 5;
 \end{code}
 
-TODO: Can we use DelaySet on a list element? What is the effect of this?
-
-You cannot grow a list in this fashion. That is, for a list like \texttt{A} that has 4 elements, you cannot add a fifth element by 
+You cannot grow a list in this fashion. That is, for a list like \expr{A} that has 4 elements, you cannot add a fifth element by 
 \begin{code}
 	   A[[5]] = 5.0;
 \end{code}
-This is because, like arrays in C or Java, lists have a fixed width, and \emph{Mathematica} will not allocate more memory for them unless you explicitly tell it to (using the \texttt{AppendTo} function).\footnote{This is a much different model than languages like Perl or Ruby that automatically grow an array when you make an ``out of bounds'' assignment. This strategy, while handy, can slow down your program because memory will be allocated frequently in small chunks rather than infrequently in large chunks.}
+This is because, like arrays in C or Java, lists have a fixed width, and \emph{Mathematica} will not allocate more memory for them unless you explicitly tell it to (using the \expr{AppendTo} function).\footnote{This is a much different model than languages like Perl or Ruby that automatically grow an array when you make an ``out of bounds'' assignment. This strategy, while handy, can slow down your program because memory will be allocated frequently in small chunks rather than infrequently in large chunks.}
 
-\section{The \texttt{Map} Function}
+\section{The \expr{Map} Function}
 
-\section{The \texttt{Table} Function}
+You may have seen the \expr{Map} function mentioned previously in this book. Now we will discuss it in detail. \expr{Map} takes two arguments: a \emph{Mathematica} function \expr{F}, and a List of domain elements for \expr{F}. Recall the following example from Chapter \ref{chap:SeenBefore}, ``\nameref{chap:SeenBefore}'':
+
+\begin{code}
+	   Map[Cos, \{0, 0.1, 0.2, 0.3, 0.4, 0.5\}]
+\end{code}
+
+This coode generates a list of range values for the \expr{Cos} function that correspond to the domain points $\{0, 0.1, 0.2, 0.3, 0.4, 0.5\}$. In languages like C, FORTRAN, or Python, you may have used a ``for-loop'' to do a task like this. You would have to declare an empty array, then declare an index, and then apply the function to each element of the domain array. However in \emph{Mathematica} and other languages that support Functional Programming, the \expr{Map} function can do all of this for you at once. 
+
+You may have the occasional programming task that involves transforming a list from one form to another. For example, suppose you have a list of complex numbers that you'd like to plot in the plane:
+
+\begin{code}
+	   (* You can type $i$ as: ``Esc''+ii+``Esc'' *)\\
+	   SomeComplexNumbers = \{1 + 2$i$, 2 + 3$i$, 4 + 5$i$, 6 + 7$i$\};
+\end{code}
+
+The first thing we need to do is figure out how to transform each number into a point in the plane. The rule we will use for this is $z \mapsto (Re[z], Im[z])$, which means that the $x$ value of the point will be the Real part of the complex number, and the $y$ value of the point will be the Imaginary part of the number. Let's express this in \emph{Mathematica} as follows:
+
+\begin{code}
+	   ComplexToCartesian[z\_]:=\{Re[z],Im[z]\};
+\end{code}
+
+You can try that on a few numbers to get a feel for how it works. Now that we know how to transform an individual number, how can we easily apply it to a whole list of numbers? That's right, we use \expr{Map}.
+
+\begin{code}
+	   Map[ComplexToCartesian, SomeComplexNumbers]\\
+	   \MReturn{\{\{1,2\},\{2,3\},\{4,5\},\{6,7\}\}\\}
+\end{code}
+
+So we see that we have successfully transformed a list of complex numbers into a list of ordered pairs. If we check the documentation for \expr{ListPlot}\footnote{Hint: check the documentation. Relying on the documentation is a great way to become more fluent in \emph{Mathematica} }, we see that it will accept a list of ordered pairs and plot them. As such:
+
+\begin{code}
+	   OrderedPairs = Map[ComplexToCartesian, SomeComplexNumbers];\\
+	   ListPlot[OrderedPairs]
+\end{code}
+
+\section{The \expr{Table} Function}
+
+\expr{Table} is a very handy function that will generate Lists, Matrices\footnote{Matrices are just lists of lists}, 3D Arrays\footnote{3D Arrays are lists of lists of lists}, etc based on an expression. For Example,
+
+\begin{code}
+	   Table[$a_{i,j}$, \{i,1,2\},\{j,1,3\}]\\
+	   $\hookrightarrow$ $\left( \begin{array}{ccc} 
+			   a_{1,1} & a_{1,2} & a_{1,3} \\
+			   a_{2,1} & a_{2,2} & a_{2,3} \\
+		\end{array} \right)$
+\end{code}
+
+You can see in Cell 1 that \expr{Table} takes an expression as its first argument. That expression should contain some symbols, or ``Dummy Variables'' that will be used for iteration. The other arguments given to \expr{Table} are lists that describe how the ``Dummy Variables'' should iterate. In this particular example, we build a matrix with two rows and three columns. 
+
+If we wanted to build a function to transpose a square matrix, we could do so as follows using the \expr{Table} function:
+
+\begin{code}
+	   SimpleTranspose[matrix\_]:= Block[\{n\},\\
+			 n = Length[matrix];\\
+			 Table[matrix[[j,i]],\{i,1,n\},\{j,1,n\}]\\
+	   ];
+\end{code}
+
+This function simply measures the length of the given matrix, and then creates a table whose $i,j$-entry is the $j,i$-entry of the original matrix, resulting in the transpose\footnote{\expr{SimpleTranspose} only works for square matrices. \emph{Mathematica}'s built-in \expr{Transpose} function works for rectangular matrices as well}.
+
+
 
 \section{Vectors, Matrices, and Higher Lists of Lists}
